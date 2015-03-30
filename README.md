@@ -8,4 +8,4 @@ Angular ES6 module
 
 4. `npm install`
 
-5. `gulp help`
+5. `npm start`

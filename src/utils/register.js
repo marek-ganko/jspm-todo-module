@@ -141,7 +141,7 @@ export default function register(appName, dependencies) {
    * @param callback
    */
   function _override(object, methodName, callback) {
-    object[methodName] = callback(object[methodName])
+    object[methodName] = callback(object[methodName]);
   }
 
 }
