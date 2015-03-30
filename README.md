@@ -1,4 +1,4 @@
-# Angular ES6 module
+# Todo module
 
 1. `npm install -g gulp`
 
