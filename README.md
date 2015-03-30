@@ -1,5 +1,5 @@
-Angular ES6 module
--------------
+# Angular ES6 module
+
 1. `npm install -g gulp`
 
 2. `npm install -g bower`
