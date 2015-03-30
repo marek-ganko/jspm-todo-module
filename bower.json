@@ -10,7 +10,9 @@
     "package.json",
     "README.md",
     "config.js",
-    "index.html"
+    "jshint.config.json",
+    "index.html",
+    "src/AppDemo.js"
   ],
   "dependencies": {
     "angular": "*"

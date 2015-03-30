@@ -31,7 +31,6 @@ gulp.task('version', 'Print module version.', [], function() {
   aliases: ['v']
 });
 
-
 gulp.task('serve', 'Start server', ['less'], function () {
   gulpPlugins.connect.server({
     root: [__dirname],
@@ -58,3 +57,10 @@ gulp.task('watch', 'Run the application', ['less', 'jshint', 'serve'], function 
 
   gulpPlugins.watch(sources.srcPath).pipe(gulpPlugins.connect.reload());
 });
+
+gulp.task('createBundle', 'Create JSPM bundle-sfx',
+    gulpPlugins.shell.task([
+      'jspm bundle-sfx src/Todo todo.js',
+      'jspm bundle-sfx src/Todo todo.min.js --minify'
+    ])
+);
