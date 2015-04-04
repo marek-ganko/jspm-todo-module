@@ -4,4 +4,4 @@ import TodoListDirective from './TodoListDirective';
 export default register('')
   .directive('todoList', TodoListDirective);
 
-console.log('directives to do loaded');
+console.log('directive todoList loaded');
