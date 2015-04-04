@@ -1,11 +1,11 @@
-describe('Todo Demo', function () {
+describe('Todo Demo', () =>{
 
 
-  beforeEach(function () {
+  beforeEach(() => {
     browser.get('/index.html');
   });
 
-  it('should have proper title', function () {
+  it('should have proper title', () => {
 
     expect(browser.getTitle()).toEqual('Todo Module Demo');
 

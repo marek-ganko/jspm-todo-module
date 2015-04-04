@@ -3,3 +3,4 @@ bower_components/
 node_modules/
 jspm_packages/
 npm-debug.log
+test/e2e/dist/

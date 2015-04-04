@@ -1,10 +1,10 @@
 {
   "name": "todo",
   "version": "0.0.0",
-  "main": "todo.js",
+  "main": "dist/todo.js",
   "description": "Todo Module",
   "ignore": [
-    "shim",
+    "src/shim",
     ".gitignore",
     "gulpfile.js",
     "package.json",
@@ -12,7 +12,8 @@
     "config.js",
     "jshint.config.json",
     "index.html",
-    "src/AppDemo.js"
+    "src/TodoDemo.js",
+    "test"
   ],
   "dependencies": {
     "angular": "*"
