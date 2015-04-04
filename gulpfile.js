@@ -1,5 +1,6 @@
 var gulp = require('gulp'),
   gulpPlugins = require('gulp-load-plugins')(),
+  argv = gulpPlugins.util.env,
   log = gulpPlugins.util.log,
   colors = gulpPlugins.util.colors,
   bowerPackage = require('./bower.json'),
@@ -12,7 +13,9 @@ var gulp = require('gulp'),
     protractorConfig: 'test/protractor.conf.js',
     e2eSrcFiles: 'test/e2e/src/**/*.js',
     e2eDistFiles: 'test/e2e/dist/**/*.js',
-    e2eDistPath: 'test/e2e/dist/'
+    e2eDistPath: 'test/e2e/dist/',
+    versioningFiles: ['./bower.json', './package.json'],
+    bundlesPath: 'dist/'
   },
   config = {
     url: 'http://localhost',
@@ -138,3 +141,51 @@ gulp.task('test:e2e', 'Run e2e tests', ['transpileE2e', 'runServer'], function (
     });
 });
 
+gulp.task('bump', 'Bump package version', ['bump:push'], function () {
+}, {
+  options: {
+    'release': 'x.0.0',
+    'feature': '0.x.0',
+    'patch': '0.0.x [Default]'
+  }
+});
+
+gulp.task('bump:push', 'Push commits to master branch', ['bump:tag'], function () {
+  return gulpPlugins.git.push('origin', 'master', {args: '--tags'});
+});
+
+gulp.task('bump:tag', 'Create tag from version in ' + sources.versioningFiles[0], ['bump:commit'], function () {
+  return gulp.src(sources.versioningFiles[0]).pipe(gulpPlugins.tagVersion());
+});
+
+gulp.task('bump:commit', 'Commit versioning files', ['bump:add'], function () {
+  return gulp.src(sources.versioningFiles).pipe(gulpPlugins.git.commit('Bump version to ' + getBowerPackage().version));
+});
+
+gulp.task('bump:add', 'Add versioning files to commit', ['bump:pull', 'createBundle'], function () {
+  return gulp.src(sources.versioningFiles.concat([sources.bundlesPath])).pipe(gulpPlugins.git.add());
+});
+
+gulp.task('bump:pull', 'Checkout master branch', ['bump:checkout'], function () {
+  return gulpPlugins.git.pull('origin', 'master');
+});
+
+gulp.task('bump:checkout', 'Checkout master branch', ['bump:version'], function () {
+  return gulpPlugins.git.checkout('master');
+});
+
+gulp.task('bump:version', 'Bump package version', function () {
+  var getType = function (argv) {
+    if (argv.feature) {
+      return 'minor';
+    }
+    if (argv.release) {
+      return 'major';
+    }
+    return 'patch';
+  };
+
+  return gulp.src(sources.versioningFiles)
+    .pipe(gulpPlugins.bump({type: getType(argv)}))
+    .pipe(gulp.dest('.'));
+});
