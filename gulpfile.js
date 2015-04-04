@@ -3,11 +3,14 @@ var gulp = require('gulp'),
   argv = gulpPlugins.util.env,
   log = gulpPlugins.util.log,
   colors = gulpPlugins.util.colors,
-  bowerPackage = require('./bower.json'),
   jshintConfig = require('./jshint.config.json'),
   fs = require('fs'),
   getBowerPackage = function () {
     return JSON.parse(fs.readFileSync('./bower.json', 'utf8'))
+  },
+  printVersion = function () {
+    var bowerPackage = getBowerPackage();
+    log(colors.blue('Current package version: ' + bowerPackage.version));
   },
   sources = {
     srcPath: 'src/**/*',
@@ -39,8 +42,8 @@ gulp.task('less', 'Compile less to css', function () {
     .pipe(gulp.dest('src/'));
 });
 
-gulp.task('version', 'Print module version.', [], function () {
-  process.stdout.write('\n' + bowerPackage.name + ' v' + bowerPackage.version + '\n\n');
+gulp.task('version', 'Print bower package version.', [], function () {
+  printVersion();
 }, {
   aliases: ['v']
 });
@@ -146,6 +149,7 @@ gulp.task('test:e2e', 'Run e2e tests', ['transpileE2e', 'runServer'], function (
 });
 
 gulp.task('bump', 'Bump package version', ['bump:push'], function () {
+  printVersion();
 }, {
   options: {
     'release': 'x.0.0',
