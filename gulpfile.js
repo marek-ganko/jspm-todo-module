@@ -19,7 +19,7 @@ var gulp = require('gulp'),
     e2eDistFiles: 'test/e2e/dist/**/*.js',
     e2eDistPath: 'test/e2e/dist/',
     versioningFiles: ['./bower.json', './package.json'],
-    bundlesPath: 'dist/'
+    bundlesPath: 'dist/*'
   },
   config = {
     url: 'http://localhost',
@@ -163,7 +163,7 @@ gulp.task('bump:tag', 'Create tag from version in ' + sources.versioningFiles[0]
 });
 
 gulp.task('bump:commit', 'Commit versioning files', ['bump:add'], function () {
-  return gulp.src(sources.versioningFiles).pipe(gulpPlugins.git.commit('Bump version to ' + getBowerPackage().version));
+  return gulp.src(sources.versioningFiles.concat([sources.bundlesPath])).pipe(gulpPlugins.git.commit('Bump version to ' + getBowerPackage().version));
 });
 
 gulp.task('bump:add', 'Add versioning files to commit', ['bump:pull', 'createBundle'], function () {
