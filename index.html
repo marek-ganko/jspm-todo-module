@@ -1,21 +1,22 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Angular Module Demo</title>
-    <meta name="description" content="Angular Module Demo">
-    <script src="jspm_packages/system.js"></script>
-    <script src="config.js"></script>
-    <script src="bower_components/angular/angular.js"></script>
-
-    <script>
-        System.import('src/AppDemo').catch(console.error.bind(console));
-    </script>
+    <title>Todo Module Demo</title>
+    <meta name="description" content="Todo Module Demo">
 </head>
 
 <body>
 <div>
     <todo-list></todo-list>
 </div>
+
+<script src="jspm_packages/system.js"></script>
+<script src="config.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+
+<script>
+    System.import('src/TodoDemo').catch(console.error.bind(console));
+</script>
+
 </body>
 </html>
-

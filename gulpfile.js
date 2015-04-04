@@ -8,7 +8,9 @@ var gulp = require('gulp'),
     srcPath: 'src/**/*',
     less: 'src/**/*.less',
     js: 'src/**/*.js',
-    karmaConfig: 'test/karma.conf.js'
+    karmaConfig: 'test/karma.conf.js',
+    protractorConfig: 'test/protractor.conf.js',
+    e2eTestPath: 'test/e2e/**/*.js'
   },
   config = {
     url: 'http://localhost',
@@ -34,7 +36,14 @@ gulp.task('version', 'Print module version.', [], function () {
   aliases: ['v']
 });
 
-gulp.task('serve', 'Start server', ['less'], function () {
+gulp.task('runServer', 'Run server', function () {
+  gulpPlugins.connect.server({
+    root: './',
+    port: config.port
+  });
+});
+
+gulp.task('runServer:livereload', 'Start server', ['less'], function () {
   gulpPlugins.connect.server({
     root: [__dirname],
     port: config.port,
@@ -88,3 +97,19 @@ gulp.task('test:watch', 'Run unit tests with watch', function () {
     }));
 });
 
+gulp.task('test:e2e', 'Run e2e tests', ['runServer'], function () {
+  gulp.src(sources.e2eTestPath)
+    .pipe(gulpPlugins.angularProtractor({
+      configFile: sources.protractorConfig,
+      args: ['--baseUrl', config.url + ':' + config.port],
+      autoStartStopServer: true,
+      debug: true
+    }))
+    .on('error', function (e) {
+      log(colors.red('E2e tests failed'));
+      process.exit(1);
+    })
+    .on('end', function () {
+      process.exit();
+    });
+});
