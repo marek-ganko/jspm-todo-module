@@ -5,6 +5,10 @@ var gulp = require('gulp'),
   colors = gulpPlugins.util.colors,
   bowerPackage = require('./bower.json'),
   jshintConfig = require('./jshint.config.json'),
+  fs = require('fs'),
+  getBowerPackage = function () {
+    return JSON.parse(fs.readFileSync('./bower.json', 'utf8'))
+  },
   sources = {
     srcPath: 'src/**/*',
     less: 'src/**/*.less',
