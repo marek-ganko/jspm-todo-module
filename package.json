@@ -1,6 +1,6 @@
 {
   "name": "todo-module",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Todo Module",
   "devDependencies": {
     "fs": "0.0.2",
