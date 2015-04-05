@@ -4,23 +4,19 @@ export class Storage {
     throw Error('Abstract class');
   }
 
-  add() {
+  add(item) {
     throw Error('add Not implemented');
   }
 
-  save() {
+  save(item) {
     throw Error('save Not implemented');
   }
 
-  remove(element) {
+  remove(item) {
     throw Error('remove Not implemented');
   }
 
-  get(element) {
+  get() {
     throw Error('get Not implemented');
-  }
-
-  getAll() {
-    throw Error('getAll Not implemented');
   }
 }

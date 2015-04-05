@@ -1,1 +1,3 @@
-export var angular = window.angular;
+"use strict";
+var angular = window.angular;
+export default angular;

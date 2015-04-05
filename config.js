@@ -5,13 +5,19 @@ System.config({
     "github:*": "jspm_packages/github/*.js",
     "npm:*": "jspm_packages/npm/*.js",
     "angular": "src/shim/angular.js"
+  },
+  "babelOptions": {
+    "experimental": false
   }
 });
 
 System.config({
   "map": {
+    "angular-route": "npm:angular-route@1.3.15",
     "css": "github:systemjs/plugin-css@0.1.6",
     "jade": "github:johnsoftek/plugin-jade@0.4.0",
+    "todomvc-app-css": "npm:todomvc-app-css@1.0.1",
+    "todomvc-common": "npm:todomvc-common@1.0.1",
     "github:johnsoftek/plugin-jade@0.4.0": {
       "jade-compiler": "npm:jade@1.9.1"
     },

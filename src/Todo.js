@@ -2,6 +2,8 @@ import TodoList from './todoList/index';
 import TodoItem from './todoItem/index';
 import Providers from './providers/index';
 import Services from './services/index';
+import 'angular-route';
 
-export default angular.module('TodoModules', [Services.name, TodoList.name, TodoItem.name, Providers.name]);
+console.log(TodoList);
+export default angular.module('TodoModules', ['ngRoute', Services.name, TodoList.name, TodoItem.name, Providers.name]);
 console.log('ToDoModules loaded');
