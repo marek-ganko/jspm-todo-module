@@ -4,7 +4,9 @@ var gulp = require('gulp'),
   log = gulpPlugins.util.log,
   colors = gulpPlugins.util.colors,
   jshintConfig = require('./jshint.config.json'),
+  browserSync = require('browser-sync'),
   fs = require('fs'),
+
   getBowerPackage = function () {
     return JSON.parse(fs.readFileSync('./bower.json', 'utf8'))
   },
@@ -55,19 +57,15 @@ gulp.task('runServer', 'Run server', function () {
   });
 });
 
-gulp.task('runServer:livereload', 'Start server', ['less'], function () {
-  gulpPlugins.connect.server({
-    root: [__dirname],
-    port: config.port,
-    livereload: true
-  });
 
-  gulp.src('index.html')
-    .pipe(gulpPlugins.open('', {
-      url: config.url + ':' + config.port + '/index.html',
-      app: config.browser
-    }));
+gulp.task('runServer', 'Run server', function () {
+  browserSync({
+    server: {
+      baseDir: "./"
+    }
+  });
 });
+
 
 gulp.task('jshint', 'Run jshint on the whole project', function () {
   gulp.src(sources.js)
@@ -79,7 +77,7 @@ gulp.task('watch', 'Run the application', ['less', 'jshint', 'serve'], function 
   gulp.watch(sources.less, ['less']);
   gulp.watch(sources.js, ['jshint']);
 
-  gulpPlugins.watch(sources.srcPath).pipe(gulpPlugins.connect.reload());
+  gulpPlugins.watch(sources.srcPath).on("change", browserSync.reload);
 });
 
 gulp.task('createBundle', 'Create JSPM bundles', ['createBundle:sfx', 'createBundle:systemjs'], function () {
