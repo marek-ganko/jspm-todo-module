@@ -2,12 +2,12 @@ section#todoapp
     header#header
         h1 todos
         form#todo-form(ng-submit='addTodo()')
-            input#new-todo(placeholder='What needs to be done?', ng-model='newTodo', ng-disabled='saving', autofocus='')
+            input#new-todo(placeholder='What needs to be done?', ng-model='newTodo', autofocus='')
     section#main(ng-show='todos.length', ng-cloak='')
         input#toggle-all(type='checkbox', ng-model='allChecked', ng-click='markAll(allChecked)')
         label(for='toggle-all') Mark all as complete
         ul#todo-list
-            li(ng-repeat='todo in todos | filter:statusFilter track by $index', ng-class='{completed: todo.completed, editing: todo == editedTodo}')
+            li(ng-repeat='todo in todos | filter:statusFilter', ng-class='{completed: todo.completed, editing: todo === editedTodo}')
                 .view
                     input.toggle(type='checkbox', ng-model='todo.completed', ng-change='toggleCompleted(todo)')
                     label(ng-dblclick='editTodo(todo)') {{todo.title}}
@@ -20,11 +20,11 @@ section#todoapp
             ng-pluralize(count='remainingCount', when="{ one: 'item left', other: 'items left' }")
         ul#filters
             li
-                a(ng-class="{selected: status == ''} ", href='#/') All
+                a(ng-class="{selected: status == ''} ", ng-click="onStatusChange('')" ) All
             li
-                a(ng-class="{selected: status == 'active'}", href='#/active') Active
+                a(ng-class="{selected: status == 'active'}", ng-click="onStatusChange('active')" ) Active
             li
-                a(ng-class="{selected: status == 'completed'}", href='#/completed') Completed
+                a(ng-class="{selected: status == 'completed'}", ng-click="onStatusChange('completed')" ) Completed
         button#clear-completed(ng-click='clearCompletedTodos()', ng-show='completedCount') Clear completed ({{completedCount}})
 footer#info
     p Double-click to edit a todo

@@ -1,19 +1,24 @@
 System.config({
   "transpiler": "babel",
+  "babelOptions": {
+    "experimental": false,
+    "optional": [
+      "runtime"
+    ]
+  },
   "paths": {
     "*": "*.js",
     "github:*": "jspm_packages/github/*.js",
     "npm:*": "jspm_packages/npm/*.js",
     "angular": "src/shim/angular.js"
-  },
-  "babelOptions": {
-    "experimental": false
   }
 });
 
 System.config({
   "map": {
     "angular-route": "npm:angular-route@1.3.15",
+    "babel": "npm:babel@4.7.16",
+    "babel-runtime": "npm:babel-runtime@4.7.16",
     "css": "github:systemjs/plugin-css@0.1.6",
     "jade": "github:johnsoftek/plugin-jade@0.4.0",
     "todomvc-app-css": "npm:todomvc-app-css@1.0.1",
@@ -38,10 +43,8 @@ System.config({
     },
     "github:jspm/nodelibs-http@1.7.0": {
       "Base64": "npm:Base64@0.2.1",
-      "events": "github:jspm/nodelibs-events@0.1.0",
       "inherits": "npm:inherits@2.0.1",
       "stream": "github:jspm/nodelibs-stream@0.1.0",
-      "url": "github:jspm/nodelibs-url@0.1.0",
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
     "github:jspm/nodelibs-https@0.1.0": {
@@ -136,6 +139,9 @@ System.config({
     "npm:aws-sign2@0.5.0": {
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "url": "github:jspm/nodelibs-url@0.1.0"
+    },
+    "npm:babel-runtime@4.7.16": {
+      "process": "github:jspm/nodelibs-process@0.1.1"
     },
     "npm:boom@0.4.2": {
       "hoek": "npm:hoek@0.9.1",

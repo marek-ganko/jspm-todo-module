@@ -30,33 +30,26 @@ export default class TodoListDirective {
     }, true);
 
     // Monitor the current route for changes and adjust the filter accordingly.
-    $scope.$on('$routeChangeSuccess', function () {
-      var status = $scope.status = $routeParams.status || '';
 
+    $scope.onStatusChange = function(status) {
       $scope.statusFilter = (status === 'active') ?
-      {completed: false} : (status === 'completed') ?
-      {completed: true} : null;
-    });
+        {completed: false} : (status === 'completed') ?
+        {completed: true} : {};
+    };
 
     $scope.addTodo = function () {
+      if (!$scope.newTodo) {
+        return;
+      }
       let newTodo = {
         title: $scope.newTodo.trim(),
         completed: false
       };
 
-      if (!newTodo.title) {
-        return;
-      }
-
-      $scope.saving = true;
-
-      todoStorage.add(newTodo)
-        .then(() => {
-          $scope.newTodo = '';
-          $scope.saving = false;
-        }).then(() => {
-
-        });
+      todoStorage.add(newTodo).then(function success() {
+        $scope.newTodo = null;
+        $scope.$apply();
+      });
     };
 
     $scope.editTodo = function (todo) {
