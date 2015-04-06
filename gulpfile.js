@@ -50,15 +50,7 @@ gulp.task('version', 'Print bower package version.', [], function () {
   aliases: ['v']
 });
 
-gulp.task('runServer', 'Run server', function () {
-  gulpPlugins.connect.server({
-    root: './',
-    port: config.port
-  });
-});
-
-
-gulp.task('runServer', 'Run server', function () {
+gulp.task('runServer', 'Run server', ['watch'], function () {
   browserSync({
     server: {
       baseDir: "./"
@@ -66,18 +58,17 @@ gulp.task('runServer', 'Run server', function () {
   });
 });
 
-
 gulp.task('jshint', 'Run jshint on the whole project', function () {
   gulp.src(sources.js)
     .pipe(gulpPlugins.jshint(jshintConfig))
     .pipe(gulpPlugins.jshint.reporter('jshint-stylish'));
 });
 
-gulp.task('watch', 'Run the application', ['less', 'jshint', 'serve'], function () {
+gulp.task('watch', 'Run the application', ['less', 'jshint'], function () {
   gulp.watch(sources.less, ['less']);
   gulp.watch(sources.js, ['jshint']);
 
-  gulpPlugins.watch(sources.srcPath).on("change", browserSync.reload);
+  gulp.watch(sources.srcPath).on("change", browserSync.reload);
 });
 
 gulp.task('createBundle', 'Create JSPM bundles', ['createBundle:sfx', 'createBundle:systemjs'], function () {
