@@ -3,7 +3,7 @@ var gulp = require('gulp'),
   argv = gulpPlugins.util.env,
   log = gulpPlugins.util.log,
   colors = gulpPlugins.util.colors,
-  jshintConfig = require('./jshint.config.json'),
+  jshintConfig = require('./jshint.json'),
   browserSync = require('browser-sync'),
   fs = require('fs'),
 
@@ -26,10 +26,9 @@ var gulp = require('gulp'),
     versioningFiles: ['./bower.json', './package.json'],
     bundlesPath: 'dist/*'
   },
-  config = {
-    url: 'http://localhost',
-    port: 9000,
-    browser: 'google chrome'
+  serverConfig = {
+    host: 'http://localhost',
+    port: 3000
   };
 
 /**
@@ -50,12 +49,19 @@ gulp.task('version', 'Print bower package version.', [], function () {
   aliases: ['v']
 });
 
-gulp.task('runServer', 'Run server', ['watch'], function () {
+function runServer(openBrowser) {
   browserSync({
+    host: serverConfig.host,
+    port: serverConfig.port,
     server: {
       baseDir: "./"
-    }
+    },
+    open: openBrowser
   });
+}
+
+gulp.task('runServer', 'Run application server', function () {
+  runServer(true);
 });
 
 gulp.task('jshint', 'Run jshint on the whole project', function () {
@@ -64,7 +70,7 @@ gulp.task('jshint', 'Run jshint on the whole project', function () {
     .pipe(gulpPlugins.jshint.reporter('jshint-stylish'));
 });
 
-gulp.task('watch', 'Run the application', ['less', 'jshint'], function () {
+gulp.task('watch', 'Run the application', ['less', 'jshint', 'runServer'], function () {
   gulp.watch(sources.less, ['less']);
   gulp.watch(sources.js, ['jshint']);
 
@@ -113,18 +119,19 @@ gulp.task('test:e2e:removeTranspiled', 'Remove transpiled e2e tests directory', 
     .pipe(gulpPlugins.clean());
 });
 
-gulp.task('test:e2e:transpile', 'Transpile e2e tests from ES6 into ES5', function () {
+gulp.task('test:e2e:transpile', 'Transpile e2e tests from ES6 into ES5', ['test:e2e:removeTranspiled'], function () {
   return gulp.src(sources.e2eSrcFiles)
     .pipe(gulpPlugins.plumber())
     .pipe(gulpPlugins.babel())
     .pipe(gulp.dest(sources.e2eDistPath));
 });
 
-gulp.task('test:e2e', 'Run e2e tests', ['transpileE2e', 'runServer'], function () {
+gulp.task('test:e2e', 'Run e2e tests', ['test:e2e:transpile'], function () {
+  runServer(false);
   gulp.src(sources.e2eDistFiles)
     .pipe(gulpPlugins.angularProtractor({
       configFile: sources.protractorConfig,
-      args: ['--baseUrl', config.url + ':' + config.port],
+      args: ['--baseUrl', serverConfig.host + ':' + serverConfig.port],
       autoStartStopServer: true,
       debug: true
     }))

@@ -1,3 +1,5 @@
+'use strict';
+import angular from 'angular';
 /**
  * A helper class to simplify registering Angular components and provide a consistent syntax for doing so.
  */
@@ -23,7 +25,7 @@ export default function register(appName, dependencies) {
   }
 
   function directive(name, constructorFn) {
-
+    /*jshint validthis: true */
     constructorFn = _normalizeConstructor(constructorFn);
 
     if (!constructorFn.prototype.compile) {
@@ -55,21 +57,25 @@ export default function register(appName, dependencies) {
   }
 
   function controller(name, contructorFn) {
+    /*jshint validthis: true */
     app.controller(name, contructorFn);
     return this;
   }
 
   function service(name, contructorFn) {
+    /*jshint validthis: true */
     app.service(name, contructorFn);
     return this;
   }
 
   function provider(name, constructorFn) {
+    /*jshint validthis: true */
     app.provider(name, constructorFn);
     return this;
   }
 
   function factory(name, constructorFn) {
+    /*jshint validthis: true */
     constructorFn = _normalizeConstructor(constructorFn);
     var factoryArray = _createFactoryArray(constructorFn);
     app.factory(name, factoryArray);
@@ -106,18 +112,18 @@ export default function register(appName, dependencies) {
    * In order to inject the dependencies, they must be attached to the constructor function with the
    * `$inject` property annotation.
    *
-   * @param constructorFn
+   * @param ConstructorFn
    * @returns {Array.<T>}
    * @private
    */
-  function _createFactoryArray(constructorFn) {
+  function _createFactoryArray(ConstructorFn) {
     // get the array of dependencies that are needed by this component (as contained in the `$inject` array)
-    var args = constructorFn.$inject || [];
+    var args = ConstructorFn.$inject || [];
     var factoryArray = args.slice(); // create a copy of the array
     // The factoryArray uses Angular's array notation whereby each element of the array is the name of a
     // dependency, and the final item is the factory function itself.
     factoryArray.push((...args) => {
-      return new constructorFn(...args);
+      return new ConstructorFn(...args);
     });
 
     return factoryArray;

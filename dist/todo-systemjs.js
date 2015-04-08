@@ -3,168 +3,16 @@
 
 
 
-System.register("src/utils/register", [], function (_export) {
-  var _applyConstructor;
-
-  /**
-   * A helper class to simplify registering Angular components and provide a consistent syntax for doing so.
-   */
-
-  _export("default", register);
-
-  function register(appName, dependencies) {
-
-    var app = safeRegister(appName, dependencies);
-
-    return {
-      name: appName,
-      directive: directive,
-      controller: controller,
-      service: service,
-      provider: provider,
-      factory: factory
-    };
-
-    function safeRegister(appName, dependencies) {
-      try {
-        return angular.module(appName);
-      } catch (e) {
-        return angular.module(appName, dependencies || []);
-      }
-    }
-
-    function directive(name, constructorFn) {
-
-      constructorFn = _normalizeConstructor(constructorFn);
-
-      if (!constructorFn.prototype.compile) {
-        // create an empty compile function if none was defined.
-        constructorFn.prototype.compile = function () {};
-      }
-
-      var originalCompileFn = _cloneFunction(constructorFn.prototype.compile);
-
-      // Decorate the compile method to automatically return the link method (if it exists)
-      // and bind it to the context of the constructor (so `this` works correctly).
-      // This gets around the problem of a non-lexical "this" which occurs when the directive class itself
-      // returns `this.link` from within the compile function.
-      _override(constructorFn.prototype, "compile", function () {
-        return function () {
-          originalCompileFn.apply(this, arguments);
-
-          if (constructorFn.prototype.link) {
-            return constructorFn.prototype.link.bind(this);
-          }
-        };
-      });
-
-      var factoryArray = _createFactoryArray(constructorFn);
-
-      app.directive(name, factoryArray);
-      return this;
-    }
-
-    function controller(name, contructorFn) {
-      app.controller(name, contructorFn);
-      return this;
-    }
-
-    function service(name, contructorFn) {
-      app.service(name, contructorFn);
-      return this;
-    }
-
-    function provider(name, constructorFn) {
-      app.provider(name, constructorFn);
-      return this;
-    }
-
-    function factory(name, constructorFn) {
-      constructorFn = _normalizeConstructor(constructorFn);
-      var factoryArray = _createFactoryArray(constructorFn);
-      app.factory(name, factoryArray);
-      return this;
-    }
-
-    /**
-     * If the constructorFn is an array of type ['dep1', 'dep2', ..., constructor() {}]
-     * we need to pull out the array of dependencies and add it as an $inject property of the
-     * actual constructor function.
-     * @param input
-     * @returns {*}
-     * @private
-     */
-    function _normalizeConstructor(input) {
-      var constructorFn;
-
-      if (input.constructor === Array) {
-        //
-        var injected = input.slice(0, input.length - 1);
-        constructorFn = input[input.length - 1];
-        constructorFn.$inject = injected;
-      } else {
-        constructorFn = input;
-      }
-
-      return constructorFn;
-    }
-
-    /**
-     * Convert a constructor function into a factory function which returns a new instance of that
-     * constructor, with the correct dependencies automatically injected as arguments.
-     *
-     * In order to inject the dependencies, they must be attached to the constructor function with the
-     * `$inject` property annotation.
-     *
-     * @param constructorFn
-     * @returns {Array.<T>}
-     * @private
-     */
-    function _createFactoryArray(constructorFn) {
-      // get the array of dependencies that are needed by this component (as contained in the `$inject` array)
-      var args = constructorFn.$inject || [];
-      var factoryArray = args.slice(); // create a copy of the array
-      // The factoryArray uses Angular's array notation whereby each element of the array is the name of a
-      // dependency, and the final item is the factory function itself.
-      factoryArray.push(function () {
-        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-          args[_key] = arguments[_key];
-        }
-
-        return _applyConstructor(constructorFn, args);
-      });
-
-      return factoryArray;
-    }
-
-    /**
-     * Clone a function
-     * @param original
-     * @returns {Function}
-     */
-    function _cloneFunction(original) {
-      return function () {
-        return original.apply(this, arguments);
-      };
-    }
-
-    /**
-     * Override an object's method with a new one specified by `callback`.
-     * @param object
-     * @param methodName
-     * @param callback
-     */
-    function _override(object, methodName, callback) {
-      object[methodName] = callback(object[methodName]);
-    }
-  }
-
+System.register("github:angular/bower-angular@1.3.15", [], function (_export) {
+  var angular;
   return {
     setters: [],
     execute: function () {
       "use strict";
 
-      _applyConstructor = function (Constructor, args) { var instance = Object.create(Constructor.prototype); var result = Constructor.apply(instance, args); return result != null && (typeof result == "object" || typeof result == "function") ? result : instance; };
+      angular = window.angular;
+
+      _export("default", angular);
     }
   };
 });
@@ -518,33 +366,7 @@ System.register("npm:todomvc-common@1.0.1/base", [], true, function(require, exp
 
 
 
-System.register("angular", [], function (_export) {
-  var angular;
-  return {
-    setters: [],
-    execute: function () {
-      "use strict";
-
-      angular = window.angular;
-
-      _export("default", angular);
-    }
-  };
-});
-System.register("src/todoItem/index", ["../utils/register"], function (_export) {
-  var register;
-  return {
-    setters: [function (_utilsRegister) {
-      register = _utilsRegister["default"];
-    }],
-    execute: function () {
-      "use strict";
-
-      _export("default", register("todoItem", []));
-    }
-  };
-});
-System.register("src/providers/Storage", [], function (_export) {
+System.register("src/services/Storage", [], function (_export) {
   var _prototypeProperties, _classCallCheck, Storage;
 
   return {
@@ -596,19 +418,6 @@ System.register("src/providers/Storage", [], function (_export) {
 
         return Storage;
       })());
-    }
-  };
-});
-System.register("src/services/index", ["../utils/register"], function (_export) {
-  var register;
-  return {
-    setters: [function (_utilsRegister) {
-      register = _utilsRegister["default"];
-    }],
-    execute: function () {
-      "use strict";
-
-      _export("default", register("services", []));
     }
   };
 });
@@ -915,7 +724,178 @@ System.register("npm:angular-route@1.3.15/angular-route", [], true, function(req
 
 
 
-System.register("src/todoList/template.jade!github:johnsoftek/plugin-jade@0.4.0", ["npm:jade@1.9.1/lib/runtime"], true, function(require, exports, module) {
+System.register("src/utils/register", ["angular"], function (_export) {
+  var angular, _applyConstructor;
+
+  /**
+   * A helper class to simplify registering Angular components and provide a consistent syntax for doing so.
+   */
+
+  _export("default", register);
+
+  function register(appName, dependencies) {
+
+    var app = safeRegister(appName, dependencies);
+
+    return {
+      name: appName,
+      directive: directive,
+      controller: controller,
+      service: service,
+      provider: provider,
+      factory: factory
+    };
+
+    function safeRegister(appName, dependencies) {
+      try {
+        return angular.module(appName);
+      } catch (e) {
+        return angular.module(appName, dependencies || []);
+      }
+    }
+
+    function directive(name, constructorFn) {
+      /*jshint validthis: true */
+      constructorFn = _normalizeConstructor(constructorFn);
+
+      if (!constructorFn.prototype.compile) {
+        // create an empty compile function if none was defined.
+        constructorFn.prototype.compile = function () {};
+      }
+
+      var originalCompileFn = _cloneFunction(constructorFn.prototype.compile);
+
+      // Decorate the compile method to automatically return the link method (if it exists)
+      // and bind it to the context of the constructor (so `this` works correctly).
+      // This gets around the problem of a non-lexical "this" which occurs when the directive class itself
+      // returns `this.link` from within the compile function.
+      _override(constructorFn.prototype, "compile", function () {
+        return function () {
+          originalCompileFn.apply(this, arguments);
+
+          if (constructorFn.prototype.link) {
+            return constructorFn.prototype.link.bind(this);
+          }
+        };
+      });
+
+      var factoryArray = _createFactoryArray(constructorFn);
+
+      app.directive(name, factoryArray);
+      return this;
+    }
+
+    function controller(name, contructorFn) {
+      /*jshint validthis: true */
+      app.controller(name, contructorFn);
+      return this;
+    }
+
+    function service(name, contructorFn) {
+      /*jshint validthis: true */
+      app.service(name, contructorFn);
+      return this;
+    }
+
+    function provider(name, constructorFn) {
+      /*jshint validthis: true */
+      app.provider(name, constructorFn);
+      return this;
+    }
+
+    function factory(name, constructorFn) {
+      /*jshint validthis: true */
+      constructorFn = _normalizeConstructor(constructorFn);
+      var factoryArray = _createFactoryArray(constructorFn);
+      app.factory(name, factoryArray);
+      return this;
+    }
+
+    /**
+     * If the constructorFn is an array of type ['dep1', 'dep2', ..., constructor() {}]
+     * we need to pull out the array of dependencies and add it as an $inject property of the
+     * actual constructor function.
+     * @param input
+     * @returns {*}
+     * @private
+     */
+    function _normalizeConstructor(input) {
+      var constructorFn;
+
+      if (input.constructor === Array) {
+        //
+        var injected = input.slice(0, input.length - 1);
+        constructorFn = input[input.length - 1];
+        constructorFn.$inject = injected;
+      } else {
+        constructorFn = input;
+      }
+
+      return constructorFn;
+    }
+
+    /**
+     * Convert a constructor function into a factory function which returns a new instance of that
+     * constructor, with the correct dependencies automatically injected as arguments.
+     *
+     * In order to inject the dependencies, they must be attached to the constructor function with the
+     * `$inject` property annotation.
+     *
+     * @param ConstructorFn
+     * @returns {Array.<T>}
+     * @private
+     */
+    function _createFactoryArray(ConstructorFn) {
+      // get the array of dependencies that are needed by this component (as contained in the `$inject` array)
+      var args = ConstructorFn.$inject || [];
+      var factoryArray = args.slice(); // create a copy of the array
+      // The factoryArray uses Angular's array notation whereby each element of the array is the name of a
+      // dependency, and the final item is the factory function itself.
+      factoryArray.push(function () {
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+
+        return _applyConstructor(ConstructorFn, args);
+      });
+
+      return factoryArray;
+    }
+
+    /**
+     * Clone a function
+     * @param original
+     * @returns {Function}
+     */
+    function _cloneFunction(original) {
+      return function () {
+        return original.apply(this, arguments);
+      };
+    }
+
+    /**
+     * Override an object's method with a new one specified by `callback`.
+     * @param object
+     * @param methodName
+     * @param callback
+     */
+    function _override(object, methodName, callback) {
+      object[methodName] = callback(object[methodName]);
+    }
+  }
+
+  return {
+    setters: [function (_angular) {
+      angular = _angular["default"];
+    }],
+    execute: function () {
+      "use strict";
+
+      _applyConstructor = function (Constructor, args) { var instance = Object.create(Constructor.prototype); var result = Constructor.apply(instance, args); return result != null && (typeof result == "object" || typeof result == "function") ? result : instance; };
+    }
+  };
+});
+System.register("src/todo/template.jade!github:johnsoftek/plugin-jade@0.4.0", ["npm:jade@1.9.1/lib/runtime"], true, function(require, exports, module) {
   var global = System.global,
       __define = global.define;
   global.define = undefined;
@@ -924,7 +904,7 @@ System.register("src/todoList/template.jade!github:johnsoftek/plugin-jade@0.4.0"
     var buf = [];
     var jade_mixins = {};
     var jade_interp;
-    buf.push("<section id=\"todoapp\"><header id=\"header\"><h1>todos</h1><form id=\"todo-form\" ng-submit=\"addTodo()\"><input id=\"new-todo\" placeholder=\"What needs to be done?\" ng-model=\"newTodo\" ng-disabled=\"saving\" autofocus=\"\"/></form></header><section id=\"main\" ng-show=\"todos.length\" ng-cloak=\"\"><input id=\"toggle-all\" type=\"checkbox\" ng-model=\"allChecked\" ng-click=\"markAll(allChecked)\"/><label for=\"toggle-all\">Mark all as complete</label><ul id=\"todo-list\"><li ng-repeat=\"todo in todos | filter:statusFilter track by $index\" ng-class=\"{completed: todo.completed, editing: todo == editedTodo}\"><div class=\"view\"><input type=\"checkbox\" ng-model=\"todo.completed\" ng-change=\"toggleCompleted(todo)\" class=\"toggle\"/><label ng-dblclick=\"editTodo(todo)\">{{todo.title}}</label><button ng-click=\"removeTodo(todo)\" class=\"destroy\"></button></div><form ng-submit=\"saveEdits(todo, 'submit')\"><input ng-trim=\"false\" ng-model=\"todo.title\" todo-escape=\"revertEdits(todo)\" ng-blur=\"saveEdits(todo, 'blur')\" todo-focus=\"todo == editedTodo\" class=\"edit\"/></form></li></ul></section><footer id=\"footer\" ng-show=\"todos.length\" ng-cloak=\"\"><span id=\"todo-count\"><strong>{{remainingCount}}</strong><ng-pluralize count=\"remainingCount\" when=\"{ one: 'item left', other: 'items left' }\"></ng-pluralize></span><ul id=\"filters\"><li><a ng-class=\"{selected: status == ''} \" href=\"#/\">All</a></li><li><a ng-class=\"{selected: status == 'active'}\" href=\"#/active\">Active</a></li><li><a ng-class=\"{selected: status == 'completed'}\" href=\"#/completed\">Completed</a></li></ul><button id=\"clear-completed\" ng-click=\"clearCompletedTodos()\" ng-show=\"completedCount\">Clear completed ({{completedCount}})</button></footer></section><footer id=\"info\"><p>Double-click to edit a todo</p><p>Credits:<a href=\"http://twitter.com/cburgdorf\">Christoph Burgdorf</a>,<a href=\"http://ericbidelman.com\">Eric Bidelman</a>,<a href=\"http://jacobmumm.com\">Jacob Mumm</a> and<a href=\"http://igorminar.com\">Igor Minar</a></p><p>Part of<a href=\"http://todomvc.com\">TodoMVC</a></p></footer>");
+    buf.push("<section id=\"todoapp\"><header id=\"header\"><h1>todos</h1><form id=\"todo-form\" ng-submit=\"addTodo()\"><input id=\"new-todo\" placeholder=\"What needs to be done?\" href=\"#\" ng-model=\"newTodo\" autofocus=\"\"/></form></header><section id=\"main\" ng-show=\"todos.length\" ng-cloak=\"\"><input id=\"toggle-all\" type=\"checkbox\" ng-model=\"allChecked\" href=\"#\" ng-click=\"markAll(allChecked)\"/><label for=\"toggle-all\">Mark all as complete</label><ul id=\"todo-list\"><li ng-repeat=\"todo in todos | filter:statusFilter\" href=\"#\" ng-class=\"{completed: todo.completed, editing: todo === editedTodo}\"><div class=\"view\"><input type=\"checkbox\" ng-model=\"todo.completed\" ng-change=\"toggleCompleted(todo)\" class=\"toggle\"/><label ng-dblclick=\"editTodo(todo)\">{{todo.title}}</label><button ng-click=\"removeTodo(todo)\" class=\"destroy\"></button></div><form ng-submit=\"saveEdits(todo, 'submit')\"><input ng-trim=\"false\" ng-model=\"todo.title\" todo-escape=\"revertEdits(todo)\" ng-blur=\"saveEdits(todo, 'blur')\" todo-focus=\"todo == editedTodo\" class=\"edit\"/></form></li></ul></section><footer id=\"footer\" ng-show=\"todos.length\" ng-cloak=\"\"><span id=\"todo-count\"><strong>{{remainingCount}}</strong><ng-pluralize count=\"remainingCount\" when=\"{ one: 'item left', other: 'items left' }\"></ng-pluralize></span><ul id=\"filters\"><li><a ng-class=\"{selected: status == ''}\" href=\"#\" ng-click=\"onStatusChange('')\">All</a></li><li><a ng-class=\"{selected: status == 'active'}\" href=\"#\" ng-click=\"onStatusChange('active')\">Active</a></li><li><a ng-class=\"{selected: status == 'completed'}\" href=\"#\" ng-click=\"onStatusChange('completed')\">Completed</a></li></ul><button id=\"clear-completed\" ng-click=\"clearCompletedTodos()\" href=\"#\" ng-show=\"completedCount\">Clear completed ({{completedCount}})</button></footer></section><footer id=\"info\"><p>Double-click to edit a todo</p><p>Credits:<a href=\"http://twitter.com/cburgdorf\">Christoph Burgdorf</a>,<a href=\"http://ericbidelman.com\">Eric Bidelman</a>,<a href=\"http://jacobmumm.com\">Jacob Mumm</a> and<a href=\"http://igorminar.com\">Igor Minar</a></p><p>Part of<a href=\"http://todomvc.com\">TodoMVC</a></p></footer>");
     ;
     return buf.join("");
   };
@@ -945,7 +925,7 @@ System.register("npm:todomvc-common@1.0.1", ["npm:todomvc-common@1.0.1/base"], t
 
 
 
-System.register("src/providers/LocalStorage", ["./Storage", "angular"], function (_export) {
+System.register("src/services/LocalStorage", ["./Storage", "angular"], function (_export) {
   var Storage, angular, _prototypeProperties, _inherits, _classCallCheck, STORAGE_ID, LocalStorage;
 
   return {
@@ -1111,13 +1091,13 @@ System.register("npm:angular-route@1.3.15/index", ["./angular-route"], true, fun
 
 
 
-System.register("src/todoList/TodoListDirective", ["./template.jade!", "./style.css!", "todomvc-common", "todomvc-common/base.css!", "todomvc-app-css/index.css!", "angular"], function (_export) {
+System.register("src/todo/TodoDirective", ["./template.jade!", "todomvc-common", "todomvc-common/base.css!", "todomvc-app-css/index.css!", "./style.css!", "angular"], function (_export) {
   var template, angular, _prototypeProperties, _classCallCheck, TodoListDirective;
 
   return {
     setters: [function (_templateJade) {
       template = _templateJade["default"];
-    }, function (_styleCss) {}, function (_todomvcCommon) {}, function (_todomvcCommonBaseCss) {}, function (_todomvcAppCssIndexCss) {}, function (_angular) {
+    }, function (_todomvcCommon) {}, function (_todomvcCommonBaseCss) {}, function (_todomvcAppCssIndexCss) {}, function (_styleCss) {}, function (_angular) {
       angular = _angular["default"];
     }],
     execute: function () {
@@ -1157,28 +1137,24 @@ System.register("src/todoList/TodoListDirective", ["./template.jade!", "./style.
               }, true);
 
               // Monitor the current route for changes and adjust the filter accordingly.
-              $scope.$on("$routeChangeSuccess", function () {
-                var status = $scope.status = $routeParams.status || "";
 
-                $scope.statusFilter = status === "active" ? { completed: false } : status === "completed" ? { completed: true } : null;
-              });
+              $scope.onStatusChange = function (status) {
+                $scope.statusFilter = status === "active" ? { completed: false } : status === "completed" ? { completed: true } : {};
+              };
 
               $scope.addTodo = function () {
+                if (!$scope.newTodo) {
+                  return;
+                }
                 var newTodo = {
                   title: $scope.newTodo.trim(),
                   completed: false
                 };
 
-                if (!newTodo.title) {
-                  return;
-                }
-
-                $scope.saving = true;
-
-                todoStorage.add(newTodo).then(function () {
-                  $scope.newTodo = "";
-                  $scope.saving = false;
-                }).then(function () {});
+                todoStorage.add(newTodo).then(function success() {
+                  $scope.newTodo = null;
+                  $scope.$apply();
+                });
               };
 
               $scope.editTodo = function (todo) {
@@ -1241,7 +1217,6 @@ System.register("src/todoList/TodoListDirective", ["./template.jade!", "./style.
               };
 
               $scope.markAll = function (completed) {
-                console.log(todos, completed);
                 todos.forEach(function (todo) {
                   if (todo.completed !== completed) {
                     todo.completed = !todo.completed;
@@ -1264,20 +1239,20 @@ System.register("src/todoList/TodoListDirective", ["./template.jade!", "./style.
     }
   };
 });
-System.register("src/providers/index", ["../utils/register", "./LocalStorage"], function (_export) {
-	var register, LocalStorage;
-	return {
-		setters: [function (_utilsRegister) {
-			register = _utilsRegister["default"];
-		}, function (_LocalStorage) {
-			LocalStorage = _LocalStorage["default"];
-		}],
-		execute: function () {
-			"use strict";
+System.register("src/services/index", ["../utils/register", "./LocalStorage"], function (_export) {
+  var register, LocalStorage;
+  return {
+    setters: [function (_utilsRegister) {
+      register = _utilsRegister["default"];
+    }, function (_LocalStorage) {
+      LocalStorage = _LocalStorage["default"];
+    }],
+    execute: function () {
+      "use strict";
 
-			_export("default", register("todo.providers", []).service("todoStorage", LocalStorage));
-		}
-	};
+      _export("default", register("todo.providers").service("todoStorage", LocalStorage));
+    }
+  };
 });
 System.register("npm:angular-route@1.3.15", ["npm:angular-route@1.3.15/index"], true, function(require, exports, module) {
   var global = System.global,
@@ -1290,49 +1265,41 @@ System.register("npm:angular-route@1.3.15", ["npm:angular-route@1.3.15/index"], 
 
 
 
-System.register("src/todoList/index", ["../utils/register", "./TodoListDirective"], function (_export) {
-  var register, TodoListDirective;
+System.register("src/todo/index", ["../utils/register", "./TodoDirective"], function (_export) {
+  var register, TodoDirective;
   return {
     setters: [function (_utilsRegister) {
       register = _utilsRegister["default"];
-    }, function (_TodoListDirective) {
-      TodoListDirective = _TodoListDirective["default"];
+    }, function (_TodoDirective) {
+      TodoDirective = _TodoDirective["default"];
     }],
     execute: function () {
       "use strict";
 
-      _export("default", register("todoList").directive("todo", TodoListDirective));
-
-      console.log("directive todoList loaded");
+      _export("default", register("todoModule").directive("todo", TodoDirective));
     }
   };
 });
-System.register("src/Todo", ["./todoList/index", "./todoItem/index", "./providers/index", "./services/index", "angular-route"], function (_export) {
-  var TodoList, TodoItem, Providers, Services;
+System.register("src/Todo", ["./todo/index", "./services/index", "angular", "angular-route"], function (_export) {
+  var TodoModule, Services, angular;
   return {
-    setters: [function (_todoListIndex) {
-      TodoList = _todoListIndex["default"];
-    }, function (_todoItemIndex) {
-      TodoItem = _todoItemIndex["default"];
-    }, function (_providersIndex) {
-      Providers = _providersIndex["default"];
+    setters: [function (_todoIndex) {
+      TodoModule = _todoIndex["default"];
     }, function (_servicesIndex) {
       Services = _servicesIndex["default"];
+    }, function (_angular) {
+      angular = _angular["default"];
     }, function (_angularRoute) {}],
     execute: function () {
       "use strict";
 
-      console.log(TodoList);
-
-      _export("default", angular.module("TodoModules", ["ngRoute", Services.name, TodoList.name, TodoItem.name, Providers.name]));
-
-      console.log("ToDoModules loaded");
+      _export("default", angular.module("todoModules", ["ngRoute", Services.name, TodoModule.name]));
     }
   };
 });
-System.register('src/todoList/style.css!github:systemjs/plugin-css@0.1.6', [], false, function() {});
 System.register('npm:todomvc-common@1.0.1/base.css!github:systemjs/plugin-css@0.1.6', [], false, function() {});
 System.register('npm:todomvc-app-css@1.0.1/index.css!github:systemjs/plugin-css@0.1.6', [], false, function() {});
+System.register('src/todo/style.css!github:systemjs/plugin-css@0.1.6', [], false, function() {});
 (function(c){var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})
-("body{background:rgba(0,55,197,.49)}hr{margin:20px 0;border:0;border-top:1px dashed #c5c5c5;border-bottom:1px dashed #f7f7f7}.learn a{font-weight:400;text-decoration:none;color:#b83f45}.learn a:hover{text-decoration:underline;color:#787e7e}.learn h3,.learn h4,.learn h5{margin:10px 0;font-weight:500;line-height:1.2;color:#000}.learn h3{font-size:24px}.learn h4{font-size:18px}.learn h5{margin-bottom:0;font-size:14px}.learn ul{padding:0;margin:0 0 30px 25px}.learn li{line-height:20px}.learn p{font-size:15px;font-weight:300;line-height:1.3;margin-top:0;margin-bottom:0}#issue-count{display:none}.quote{border:none;margin:20px 0 60px}.quote p{font-style:italic}.quote p:before{content:'“';font-size:50px;opacity:.15;position:absolute;top:-20px;left:3px}.quote p:after{content:'”';font-size:50px;opacity:.15;position:absolute;bottom:-42px;right:3px}.quote footer{position:absolute;bottom:-40px;right:0}.quote footer img{border-radius:3px}.quote footer a{margin-left:5px;vertical-align:middle}.speech-bubble{position:relative;padding:10px;background:rgba(0,0,0,.04);border-radius:5px}.speech-bubble:after{content:'';position:absolute;top:100%;right:30px;border:13px solid transparent;border-top-color:rgba(0,0,0,.04)}.learn-bar>.learn{position:absolute;width:272px;top:8px;left:-300px;padding:10px;border-radius:5px;background-color:rgba(255,255,255,.6);transition-property:left;transition-duration:500ms}@media (min-width:899px){.learn-bar{width:auto;padding-left:300px}.learn-bar>.learn{left:8px}}body,html{margin:0;padding:0}button{margin:0;padding:0;border:0;background:0 0;font-size:100%;vertical-align:baseline;font-family:inherit;font-weight:inherit;color:inherit;-webkit-appearance:none;-ms-appearance:none;appearance:none;-webkit-font-smoothing:antialiased;-moz-font-smoothing:antialiased;-ms-font-smoothing:antialiased;font-smoothing:antialiased}body{font:14px 'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.4em;background:#f5f5f5;color:#4d4d4d;min-width:230px;max-width:550px;margin:0 auto;-webkit-font-smoothing:antialiased;-moz-font-smoothing:antialiased;-ms-font-smoothing:antialiased;font-smoothing:antialiased;font-weight:300}button,input[type=checkbox]{outline:0}.hidden{display:none}#todoapp{background:#fff;margin:130px 0 40px;position:relative;box-shadow:0 2px 4px 0 rgba(0,0,0,.2),0 25px 50px 0 rgba(0,0,0,.1)}#todoapp input::-webkit-input-placeholder{font-style:italic;font-weight:300;color:#e6e6e6}#todoapp input::-moz-placeholder{font-style:italic;font-weight:300;color:#e6e6e6}#todoapp input::input-placeholder{font-style:italic;font-weight:300;color:#e6e6e6}#todoapp h1{position:absolute;top:-155px;width:100%;font-size:100px;font-weight:100;text-align:center;color:rgba(175,47,47,.15);-webkit-text-rendering:optimizeLegibility;-moz-text-rendering:optimizeLegibility;-ms-text-rendering:optimizeLegibility;text-rendering:optimizeLegibility}#new-todo,.edit{position:relative;margin:0;width:100%;font-size:24px;font-family:inherit;font-weight:inherit;line-height:1.4em;outline:0;color:inherit;padding:6px;border:1px solid #999;box-shadow:inset 0 -1px 5px 0 rgba(0,0,0,.2);-ms-box-sizing:border-box;box-sizing:border-box;-webkit-font-smoothing:antialiased;-moz-font-smoothing:antialiased;-ms-font-smoothing:antialiased;font-smoothing:antialiased}#new-todo{padding:16px 16px 16px 60px;border:none;background:rgba(0,0,0,.003);box-shadow:inset 0 -2px 1px rgba(0,0,0,.03)}#main{position:relative;z-index:2;border-top:1px solid #e6e6e6}label[for=toggle-all]{display:none}#toggle-all{position:absolute;top:-55px;left:-12px;width:60px;height:34px;text-align:center;border:none}#toggle-all:before{content:'❯';font-size:22px;color:#e6e6e6;padding:10px 27px}#toggle-all:checked:before{color:#737373}#todo-list{margin:0;padding:0;list-style:none}#todo-list li{position:relative;font-size:24px;border-bottom:1px solid #ededed}#todo-list li:last-child{border-bottom:none}#todo-list li.editing{border-bottom:none;padding:0}#todo-list li.editing .edit{display:block;width:506px;padding:13px 17px 12px;margin:0 0 0 43px}#todo-list li.editing .view{display:none}#todo-list li .toggle{text-align:center;width:40px;height:auto;position:absolute;top:0;bottom:0;margin:auto 0;border:none;-webkit-appearance:none;-ms-appearance:none;appearance:none}#todo-list li .toggle:after{content:url(data:image/svg+xml;utf8,<svg xmlns=http://www.w3.org/2000/svg width=40 height=40 viewBox=-10 -18 100 135><circle cx=50 cy=50 r=50 fill=none stroke=#ededed stroke-width=3/></svg>)}#todo-list li .toggle:checked:after{content:url(data:image/svg+xml;utf8,<svg xmlns=http://www.w3.org/2000/svg width=40 height=40 viewBox=-10 -18 100 135><circle cx=50 cy=50 r=50 fill=none stroke=#bddad5 stroke-width=3/><path fill=#5dc2af d=M72 25L42 71 27 56l-4 4 20 20 34-52z/></svg>)}#todo-list li label{white-space:pre;word-break:break-word;padding:15px 60px 15px 15px;margin-left:45px;display:block;line-height:1.2;transition:color .4s}#todo-list li.completed label{color:#d9d9d9;text-decoration:line-through}#todo-list li .destroy{display:none;position:absolute;top:0;right:10px;bottom:0;width:40px;height:40px;margin:auto 0 11px;font-size:30px;color:#cc9a9a;transition:color .2s ease-out}#todo-list li .destroy:hover{color:#af5b5e}#todo-list li .destroy:after{content:'×'}#todo-list li:hover .destroy{display:block}#todo-list li .edit{display:none}#todo-list li.editing:last-child{margin-bottom:-1px}#footer{color:#777;padding:10px 15px;height:20px;text-align:center;border-top:1px solid #e6e6e6}#footer:before{content:'';position:absolute;right:0;bottom:0;left:0;height:50px;overflow:hidden;box-shadow:0 1px 1px rgba(0,0,0,.2),0 8px 0 -3px #f6f6f6,0 9px 1px -3px rgba(0,0,0,.2),0 16px 0 -6px #f6f6f6,0 17px 2px -6px rgba(0,0,0,.2)}#todo-count{float:left;text-align:left}#todo-count strong{font-weight:300}#filters{margin:0;padding:0;list-style:none;position:absolute;right:0;left:0}#filters li{display:inline}#filters li a{color:inherit;margin:3px;padding:3px 7px;text-decoration:none;border:1px solid transparent;border-radius:3px}#filters li a.selected,#filters li a:hover{border-color:rgba(175,47,47,.1)}#filters li a.selected{border-color:rgba(175,47,47,.2)}#clear-completed,html #clear-completed:active{float:right;line-height:20px;text-decoration:none;cursor:pointer;visibility:hidden;position:relative}#clear-completed::after{visibility:visible;content:'Clear completed';position:absolute;right:0;white-space:nowrap}#clear-completed:hover::after{text-decoration:underline}#info{margin:65px auto 0;color:#bfbfbf;font-size:10px;text-shadow:0 1px 0 rgba(255,255,255,.5);text-align:center}#info p{line-height:1}#info a{color:inherit;text-decoration:none;font-weight:400}#info a:hover{text-decoration:underline}@media screen and (-webkit-min-device-pixel-ratio:0){#todo-list li .toggle,#toggle-all{background:0 0}#todo-list li .toggle{height:40px}#toggle-all{-webkit-transform:rotate(90deg);transform:rotate(90deg);-webkit-appearance:none;appearance:none}}@media (max-width:430px){#footer{height:50px}#filters{bottom:10px}}");
+("hr{margin:20px 0;border:0;border-top:1px dashed #c5c5c5;border-bottom:1px dashed #f7f7f7}.learn a{font-weight:400;text-decoration:none;color:#b83f45}.learn a:hover{text-decoration:underline;color:#787e7e}.learn h3,.learn h4,.learn h5{margin:10px 0;font-weight:500;line-height:1.2;color:#000}.learn h3{font-size:24px}.learn h4{font-size:18px}.learn h5{margin-bottom:0;font-size:14px}.learn ul{padding:0;margin:0 0 30px 25px}.learn li{line-height:20px}.learn p{font-size:15px;font-weight:300;line-height:1.3;margin-top:0;margin-bottom:0}#issue-count{display:none}.quote{border:none;margin:20px 0 60px}.quote p{font-style:italic}.quote p:before{content:'“';font-size:50px;opacity:.15;position:absolute;top:-20px;left:3px}.quote p:after{content:'”';font-size:50px;opacity:.15;position:absolute;bottom:-42px;right:3px}.quote footer{position:absolute;bottom:-40px;right:0}.quote footer img{border-radius:3px}.quote footer a{margin-left:5px;vertical-align:middle}.speech-bubble{position:relative;padding:10px;background:rgba(0,0,0,.04);border-radius:5px}.speech-bubble:after{content:'';position:absolute;top:100%;right:30px;border:13px solid transparent;border-top-color:rgba(0,0,0,.04)}.learn-bar>.learn{position:absolute;width:272px;top:8px;left:-300px;padding:10px;border-radius:5px;background-color:rgba(255,255,255,.6);transition-property:left;transition-duration:500ms}@media (min-width:899px){.learn-bar{width:auto;padding-left:300px}.learn-bar>.learn{left:8px}}body,html{margin:0;padding:0}button{margin:0;padding:0;border:0;background:0 0;font-size:100%;vertical-align:baseline;font-family:inherit;font-weight:inherit;color:inherit;-webkit-appearance:none;-ms-appearance:none;appearance:none;-webkit-font-smoothing:antialiased;-moz-font-smoothing:antialiased;-ms-font-smoothing:antialiased;font-smoothing:antialiased}body{font:14px 'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.4em;background:#f5f5f5;color:#4d4d4d;min-width:230px;max-width:550px;margin:0 auto;-webkit-font-smoothing:antialiased;-moz-font-smoothing:antialiased;-ms-font-smoothing:antialiased;font-smoothing:antialiased;font-weight:300}button,input[type=checkbox]{outline:0}.hidden{display:none}#todoapp{background:#fff;margin:130px 0 40px;position:relative;box-shadow:0 2px 4px 0 rgba(0,0,0,.2),0 25px 50px 0 rgba(0,0,0,.1)}#todoapp input::-webkit-input-placeholder{font-style:italic;font-weight:300;color:#e6e6e6}#todoapp input::-moz-placeholder{font-style:italic;font-weight:300;color:#e6e6e6}#todoapp input::input-placeholder{font-style:italic;font-weight:300;color:#e6e6e6}#todoapp h1{position:absolute;top:-155px;width:100%;font-size:100px;font-weight:100;text-align:center;color:rgba(175,47,47,.15);-webkit-text-rendering:optimizeLegibility;-moz-text-rendering:optimizeLegibility;-ms-text-rendering:optimizeLegibility;text-rendering:optimizeLegibility}#new-todo,.edit{position:relative;margin:0;width:100%;font-size:24px;font-family:inherit;font-weight:inherit;line-height:1.4em;outline:0;color:inherit;padding:6px;border:1px solid #999;box-shadow:inset 0 -1px 5px 0 rgba(0,0,0,.2);-ms-box-sizing:border-box;box-sizing:border-box;-webkit-font-smoothing:antialiased;-moz-font-smoothing:antialiased;-ms-font-smoothing:antialiased;font-smoothing:antialiased}#new-todo{padding:16px 16px 16px 60px;border:none;background:rgba(0,0,0,.003);box-shadow:inset 0 -2px 1px rgba(0,0,0,.03)}#main{position:relative;z-index:2;border-top:1px solid #e6e6e6}label[for=toggle-all]{display:none}#toggle-all{position:absolute;top:-55px;left:-12px;width:60px;height:34px;text-align:center;border:none}#toggle-all:before{content:'❯';font-size:22px;color:#e6e6e6;padding:10px 27px}#toggle-all:checked:before{color:#737373}#todo-list{margin:0;padding:0;list-style:none}#todo-list li{position:relative;font-size:24px;border-bottom:1px solid #ededed}#todo-list li:last-child{border-bottom:none}#todo-list li.editing{border-bottom:none;padding:0}#todo-list li.editing .edit{display:block;width:506px;padding:13px 17px 12px;margin:0 0 0 43px}#todo-list li.editing .view{display:none}#todo-list li .toggle{text-align:center;width:40px;height:auto;position:absolute;top:0;bottom:0;margin:auto 0;border:none;-webkit-appearance:none;-ms-appearance:none;appearance:none}#todo-list li .toggle:after{content:url(data:image/svg+xml;utf8,<svg xmlns=http://www.w3.org/2000/svg width=40 height=40 viewBox=-10 -18 100 135><circle cx=50 cy=50 r=50 fill=none stroke=#ededed stroke-width=3/></svg>)}#todo-list li .toggle:checked:after{content:url(data:image/svg+xml;utf8,<svg xmlns=http://www.w3.org/2000/svg width=40 height=40 viewBox=-10 -18 100 135><circle cx=50 cy=50 r=50 fill=none stroke=#bddad5 stroke-width=3/><path fill=#5dc2af d=M72 25L42 71 27 56l-4 4 20 20 34-52z/></svg>)}#todo-list li label{white-space:pre;word-break:break-word;padding:15px 60px 15px 15px;margin-left:45px;display:block;line-height:1.2;transition:color .4s}#todo-list li.completed label{color:#d9d9d9;text-decoration:line-through}#todo-list li .destroy{display:none;position:absolute;top:0;right:10px;bottom:0;width:40px;height:40px;margin:auto 0 11px;font-size:30px;color:#cc9a9a;transition:color .2s ease-out}#todo-list li .destroy:hover{color:#af5b5e}#todo-list li .destroy:after{content:'×'}#todo-list li:hover .destroy{display:block}#todo-list li .edit{display:none}#todo-list li.editing:last-child{margin-bottom:-1px}#footer{color:#777;padding:10px 15px;height:20px;text-align:center;border-top:1px solid #e6e6e6}#footer:before{content:'';position:absolute;right:0;bottom:0;left:0;height:50px;overflow:hidden;box-shadow:0 1px 1px rgba(0,0,0,.2),0 8px 0 -3px #f6f6f6,0 9px 1px -3px rgba(0,0,0,.2),0 16px 0 -6px #f6f6f6,0 17px 2px -6px rgba(0,0,0,.2)}#todo-count{float:left;text-align:left}#todo-count strong{font-weight:300}#filters{margin:0;padding:0;list-style:none;position:absolute;right:0;left:0}#filters li{display:inline}#filters li a{color:inherit;margin:3px;padding:3px 7px;text-decoration:none;border:1px solid transparent;border-radius:3px}#filters li a.selected,#filters li a:hover{border-color:rgba(175,47,47,.1)}#filters li a.selected{border-color:rgba(175,47,47,.2)}#clear-completed,html #clear-completed:active{float:right;line-height:20px;text-decoration:none;cursor:pointer;visibility:hidden;position:relative}#clear-completed::after{visibility:visible;content:'Clear completed';position:absolute;right:0;white-space:nowrap}#clear-completed:hover::after{text-decoration:underline}#info{margin:65px auto 0;color:#bfbfbf;font-size:10px;text-shadow:0 1px 0 rgba(255,255,255,.5);text-align:center}#info p{line-height:1}#info a{color:inherit;text-decoration:none;font-weight:400}#info a:hover{text-decoration:underline}@media screen and (-webkit-min-device-pixel-ratio:0){#todo-list li .toggle,#toggle-all{background:0 0}#todo-list li .toggle{height:40px}#toggle-all{-webkit-transform:rotate(90deg);transform:rotate(90deg);-webkit-appearance:none;appearance:none}}@media (max-width:430px){#footer{height:50px}#filters{bottom:10px}}body{background:#bdecff}");
 //# sourceMappingURL=todo-systemjs.js.map

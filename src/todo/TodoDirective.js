@@ -1,8 +1,9 @@
+'use strict';
 import template from './template.jade!';
-import './style.css!';
 import 'todomvc-common';
 import 'todomvc-common/base.css!';
 import 'todomvc-app-css/index.css!';
+import './style.css!';
 import angular from 'angular';
 
 export default class TodoListDirective {
@@ -115,7 +116,6 @@ export default class TodoListDirective {
     };
 
     $scope.markAll = function (completed) {
-      console.log(todos, completed);
       todos.forEach(function (todo) {
         if (todo.completed !== completed) {
           todo.completed = !todo.completed;

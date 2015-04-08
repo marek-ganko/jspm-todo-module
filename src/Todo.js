@@ -1,9 +1,7 @@
-import TodoList from './todoList/index';
-import TodoItem from './todoItem/index';
-import Providers from './providers/index';
+'use strict';
+import TodoModule from './todo/index';
 import Services from './services/index';
+import angular from 'angular';
 import 'angular-route';
 
-console.log(TodoList);
-export default angular.module('TodoModules', ['ngRoute', Services.name, TodoList.name, TodoItem.name, Providers.name]);
-console.log('ToDoModules loaded');
+export default angular.module('todoModules', ['ngRoute', Services.name, TodoModule.name]);
