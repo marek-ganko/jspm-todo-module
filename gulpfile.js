@@ -82,15 +82,13 @@ gulp.task('createBundle', 'Create JSPM bundles', ['createBundle:sfx', 'createBun
 
 gulp.task('createBundle:sfx', 'Create JSPM bundle-sfx',
   gulpPlugins.shell.task([
-    'jspm bundle-sfx src/Todo dist/todo.js',
-    'jspm bundle-sfx src/Todo dist/todo.min.js --minify'
+    'jspm bundle-sfx src/Todo dist/todo.js'
   ])
 );
 
 gulp.task('createBundle:systemjs', 'Create JSPM bundle',
   gulpPlugins.shell.task([
-    'jspm bundle src/Todo dist/todo-systemjs.js',
-    'jspm bundle src/Todo dist/todo-systemjs.min.js --minify'
+    'jspm bundle src/Todo dist/todo-systemjs.js'
   ])
 );
 
