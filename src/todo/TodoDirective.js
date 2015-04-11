@@ -14,17 +14,13 @@ export default class TodoListDirective {
     this.scope = {};
   }
 
-  link(scope, element, attrs) {
-  }
+  controller($scope, $filter, todoStorage) {
 
-  controller($scope, $routeParams, $filter, todoStorage) {
-
-    $scope.todos = [];
     $scope.newTodo = '';
     $scope.editedTodo = null;
     let todos = $scope.todos = todoStorage.get();
 
-    $scope.$watch('todos', function () {
+    $scope.$watch('todos', () => {
       $scope.remainingCount = $filter('filter')(todos, {completed: false}).length;
       $scope.completedCount = todos.length - $scope.remainingCount;
       $scope.allChecked = !$scope.remainingCount;
@@ -32,13 +28,13 @@ export default class TodoListDirective {
 
     // Monitor the current route for changes and adjust the filter accordingly.
 
-    $scope.onStatusChange = function(status) {
+    $scope.onStatusChange = (status) => {
       $scope.statusFilter = (status === 'active') ?
         {completed: false} : (status === 'completed') ?
         {completed: true} : {};
     };
 
-    $scope.addTodo = function () {
+    $scope.addTodo = () => {
       if (!$scope.newTodo) {
         return;
       }
@@ -53,13 +49,13 @@ export default class TodoListDirective {
       });
     };
 
-    $scope.editTodo = function (todo) {
+    $scope.editTodo = (todo) => {
       $scope.editedTodo = todo;
       // Clone the original todo to restore it on demand.
       $scope.originalTodo = angular.extend({}, todo);
     };
 
-    $scope.saveEdits = function (todo, event) {
+    $scope.saveEdits = (todo, event) => {
       // Blur events are automatically triggered after the form submit event.
       // This does some unfortunate logic handling to prevent saving twice.
       if (event === 'blur' && $scope.saveEvent === 'submit') {
@@ -91,32 +87,32 @@ export default class TodoListDirective {
         });
     };
 
-    $scope.revertEdits = function (todo) {
+    $scope.revertEdits = (todo) => {
       todos[todos.indexOf(todo)] = $scope.originalTodo;
       $scope.editedTodo = null;
       $scope.originalTodo = null;
       $scope.reverted = true;
     };
 
-    $scope.removeTodo = function (todo) {
+    $scope.removeTodo = (todo) => {
       todoStorage.remove(todo);
     };
 
-    $scope.toggleCompleted = function (todo) {
+    $scope.toggleCompleted = (todo) => {
       todoStorage.save(todo)
         .catch((error) => {
           throw error;
         });
     };
 
-    $scope.clearCompletedTodos = function () {
+    $scope.clearCompletedTodos = () => {
       todoStorage.filter((todo) => {
         return !todo.completed;
       });
     };
 
-    $scope.markAll = function (completed) {
-      todos.forEach(function (todo) {
+    $scope.markAll = (completed) => {
+      todos.forEach((todo) => {
         if (todo.completed !== completed) {
           todo.completed = !todo.completed;
           $scope.toggleCompleted(todo);
