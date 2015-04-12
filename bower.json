@@ -1,6 +1,6 @@
 {
   "name": "todo",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "main": "dist/todo.js",
   "description": "Todo Module",
   "ignore": [
