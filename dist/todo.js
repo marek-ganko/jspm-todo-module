@@ -726,7 +726,7 @@ System.register("github:angular/bower-angular@1.3.15", [], function (_export) {
     }
   };
 });
-System.register("src/services/Storage", ["github:angular/bower-angular@1.3.15"], function (_export) {
+System.register("src/services/storage/Storage", ["github:angular/bower-angular@1.3.15"], function (_export) {
   var angular, _prototypeProperties, _classCallCheck, Storage;
 
   return {
@@ -815,7 +815,8 @@ System.register("src/services/Storage", ["github:angular/bower-angular@1.3.15"],
              */
 
             value: function get() {
-              return this.items = this.getFromStorage();
+              this.items = this.getFromStorage();
+              return this.items;
             },
             writable: true,
             configurable: true
@@ -856,12 +857,12 @@ System.register("src/services/Storage", ["github:angular/bower-angular@1.3.15"],
     }
   };
 });
-System.register("src/services/CookieStorage", ["src/services/Storage"], function (_export) {
+System.register("src/services/storage/CookieStorage", ["src/services/storage/Storage"], function (_export) {
   var Storage, _prototypeProperties, _get, _inherits, _classCallCheck, STORAGE_ID, CookieStorage;
 
   return {
-    setters: [function (_srcServicesStorage) {
-      Storage = _srcServicesStorage.Storage;
+    setters: [function (_srcServicesStorageStorage) {
+      Storage = _srcServicesStorageStorage.Storage;
     }],
     execute: function () {
       "use strict";
@@ -894,9 +895,8 @@ System.register("src/services/CookieStorage", ["src/services/Storage"], function
 
             value: function getFromStorage() {
               var result = document.cookie.match(new RegExp(STORAGE_ID + "=([^;]+)"));
-              result && (result = JSON.parse(result[1]));
+              result = result && JSON.parse(result[1]);
               return result || [];
-              return JSON.parse(localStorage.getItem(STORAGE_ID) || "[]");
             },
             writable: true,
             configurable: true
@@ -955,12 +955,12 @@ System.register("npm:todomvc-common@1.0.1", ["npm:todomvc-common@1.0.1/base"], t
 
 
 
-System.register("src/services/LocalStorage", ["src/services/Storage"], function (_export) {
+System.register("src/services/storage/LocalStorage", ["src/services/storage/Storage"], function (_export) {
   var Storage, _prototypeProperties, _get, _inherits, _classCallCheck, STORAGE_ID, LocalStorage;
 
   return {
-    setters: [function (_srcServicesStorage) {
-      Storage = _srcServicesStorage.Storage;
+    setters: [function (_srcServicesStorageStorage) {
+      Storage = _srcServicesStorageStorage.Storage;
     }],
     execute: function () {
       "use strict";
@@ -1145,14 +1145,14 @@ System.register("src/todo/TodoDirective", ["src/todo/template.jade!github:johnso
     }
   };
 });
-System.register("src/services/StorageFactory", ["src/services/LocalStorage", "src/services/CookieStorage"], function (_export) {
+System.register("src/services/StorageFactory", ["src/services/storage/LocalStorage", "src/services/storage/CookieStorage"], function (_export) {
   var LocalStorage, CookieStorage, _prototypeProperties, _classCallCheck, StorageFactory;
 
   return {
-    setters: [function (_srcServicesLocalStorage) {
-      LocalStorage = _srcServicesLocalStorage["default"];
-    }, function (_srcServicesCookieStorage) {
-      CookieStorage = _srcServicesCookieStorage["default"];
+    setters: [function (_srcServicesStorageLocalStorage) {
+      LocalStorage = _srcServicesStorageLocalStorage["default"];
+    }, function (_srcServicesStorageCookieStorage) {
+      CookieStorage = _srcServicesStorageCookieStorage["default"];
     }],
     execute: function () {
       "use strict";

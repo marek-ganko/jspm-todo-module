@@ -366,7 +366,7 @@ System.register("github:angular/bower-angular@1.3.15", [], function (_export) {
     }
   };
 });
-System.register("src/services/Storage", ["angular"], function (_export) {
+System.register("src/services/storage/Storage", ["angular"], function (_export) {
   var angular, _prototypeProperties, _classCallCheck, Storage;
 
   return {
@@ -455,7 +455,8 @@ System.register("src/services/Storage", ["angular"], function (_export) {
              */
 
             value: function get() {
-              return this.items = this.getFromStorage();
+              this.items = this.getFromStorage();
+              return this.items;
             },
             writable: true,
             configurable: true
@@ -496,7 +497,7 @@ System.register("src/services/Storage", ["angular"], function (_export) {
     }
   };
 });
-System.register("src/services/CookieStorage", ["./Storage"], function (_export) {
+System.register("src/services/storage/CookieStorage", ["./Storage"], function (_export) {
   var Storage, _prototypeProperties, _get, _inherits, _classCallCheck, STORAGE_ID, CookieStorage;
 
   return {
@@ -534,9 +535,8 @@ System.register("src/services/CookieStorage", ["./Storage"], function (_export) 
 
             value: function getFromStorage() {
               var result = document.cookie.match(new RegExp(STORAGE_ID + "=([^;]+)"));
-              result && (result = JSON.parse(result[1]));
+              result = result && JSON.parse(result[1]);
               return result || [];
-              return JSON.parse(localStorage.getItem(STORAGE_ID) || "[]");
             },
             writable: true,
             configurable: true
@@ -595,7 +595,7 @@ System.register("npm:todomvc-common@1.0.1", ["npm:todomvc-common@1.0.1/base"], t
 
 
 
-System.register("src/services/LocalStorage", ["./Storage"], function (_export) {
+System.register("src/services/storage/LocalStorage", ["./Storage"], function (_export) {
   var Storage, _prototypeProperties, _get, _inherits, _classCallCheck, STORAGE_ID, LocalStorage;
 
   return {
@@ -785,14 +785,14 @@ System.register("src/todo/TodoDirective", ["./template.jade!", "todomvc-common",
     }
   };
 });
-System.register("src/services/StorageFactory", ["./LocalStorage", "./CookieStorage"], function (_export) {
+System.register("src/services/StorageFactory", ["./storage/LocalStorage", "./storage/CookieStorage"], function (_export) {
   var LocalStorage, CookieStorage, _prototypeProperties, _classCallCheck, StorageFactory;
 
   return {
-    setters: [function (_LocalStorage) {
-      LocalStorage = _LocalStorage["default"];
-    }, function (_CookieStorage) {
-      CookieStorage = _CookieStorage["default"];
+    setters: [function (_storageLocalStorage) {
+      LocalStorage = _storageLocalStorage["default"];
+    }, function (_storageCookieStorage) {
+      CookieStorage = _storageCookieStorage["default"];
     }],
     execute: function () {
       "use strict";
