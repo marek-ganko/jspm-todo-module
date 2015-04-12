@@ -14,9 +14,8 @@ export default class CookieStorage extends Storage {
    */
   getFromStorage() {
     let result = document.cookie.match(new RegExp(STORAGE_ID + '=([^;]+)'));
-    result && (result = JSON.parse(result[1]));
+    result = result && JSON.parse(result[1]);
     return result || [];
-    return JSON.parse(localStorage.getItem(STORAGE_ID) || '[]');
   }
 
   /**

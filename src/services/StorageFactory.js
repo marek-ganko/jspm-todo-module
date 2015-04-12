@@ -1,6 +1,6 @@
 'use strict';
-import LocalStorage from './LocalStorage';
-import CookieStorage from './CookieStorage';
+import LocalStorage from './storage/LocalStorage';
+import CookieStorage from './storage/CookieStorage';
 
 export default class StorageFactory {
   constructor(storageType = 'localStorage') {

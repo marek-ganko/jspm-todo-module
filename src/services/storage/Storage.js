@@ -50,7 +50,8 @@ export class Storage {
    * @returns {*}
    */
   get() {
-    return this.items = this.getFromStorage();
+    this.items = this.getFromStorage();
+    return this.items;
   }
 
   filter(callback) {
