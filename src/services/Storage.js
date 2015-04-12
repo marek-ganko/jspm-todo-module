@@ -1,23 +1,73 @@
 'use strict';
+import angular from 'angular';
+
 export class Storage {
 
   constructor() {
-    throw Error('Abstract class');
+    this.items = [];
   }
 
+  /**
+   * @param {*} item
+   * @returns {Promise}
+   */
   add(item) {
-    throw Error('add Not implemented');
+    return new Promise((resolve, reject) => {
+      this.items.push(item);
+      this.saveOnStorage(this.items).then((items) => {
+        resolve(items);
+      });
+    });
   }
 
+  /**
+   * @param item
+   * @returns {Promise}
+   */
   save(item) {
-    throw Error('save Not implemented');
+    return new Promise((resolve, reject) => {
+      this.items[this.items.indexOf(item)] = item;
+      this.saveOnStorage(this.items).then((items) => {
+        resolve(items);
+      });
+    });
   }
 
+  /**
+   * @param item
+   * @returns {Promise}
+   */
   remove(item) {
-    throw Error('remove Not implemented');
+    return new Promise((resolve, reject) => {
+      this.items.splice(this.items.indexOf(item), 1);
+      this.saveOnStorage(this.items).then((items) => {
+        resolve(items);
+      });
+    });
   }
 
+  /**
+   * @returns {*}
+   */
   get() {
-    throw Error('get Not implemented');
+    return this.items = this.getFromStorage();
+  }
+
+  filter(callback) {
+    return new Promise((resolve, reject) => {
+      let incompleteTodos = this.items.filter(callback);
+      angular.copy(incompleteTodos, this.items);
+      this.saveOnStorage(this.items).then((items) => {
+        resolve(items);
+      });
+    });
+  }
+
+  getFromStorage() {
+    throw new Error('getFromStorage Not implemented');
+  }
+
+  saveOnStorage(items) {
+    throw new Error('saveOnStorage Not implemented');
   }
 }

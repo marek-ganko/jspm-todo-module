@@ -1,4 +1,7 @@
 'use strict';
-import LocalStorage from './LocalStorage';
+import StorageFactory from './StorageFactory';
+import angular from 'angular';
 
-export default angular.module('todo.providers', []).service('todoStorage', LocalStorage);
+export default angular.module('todo.services', []).factory('StorageFactory', () => {
+  return StorageFactory;
+});

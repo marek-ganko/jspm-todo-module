@@ -16,7 +16,6 @@ System.config({
   "map": {
     "angular": "github:angular/bower-angular@1.3.15",
     "angular-mocks": "github:angular/bower-angular-mocks@1.3.15",
-    "angular-route": "npm:angular-route@1.3.15",
     "css": "github:systemjs/plugin-css@0.1.6",
     "jade": "github:johnsoftek/plugin-jade@0.4.0",
     "todomvc-app-css": "npm:todomvc-app-css@1.0.1",

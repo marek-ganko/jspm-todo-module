@@ -7,7 +7,7 @@ section#todoapp
         input#toggle-all(type='checkbox', ng-model='allChecked' href='#' ng-click='markAll(allChecked)')
         label(for='toggle-all') Mark all as complete
         ul#todo-list
-            li(ng-repeat='todo in todos | filter:statusFilter' href='#' ng-class='{completed: todo.completed, editing: todo === editedTodo}')
+            li(ng-repeat='todo in todos | filter:statusFilter track by $index' href='#' ng-class='{completed: todo.completed, editing: todo === editedTodo}')
                 .view
                     input.toggle(type='checkbox', ng-model='todo.completed', ng-change='toggleCompleted(todo)')
                     label(ng-dblclick='editTodo(todo)') {{todo.title}}

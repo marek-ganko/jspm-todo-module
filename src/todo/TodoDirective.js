@@ -8,23 +8,25 @@ import angular from 'angular';
 
 export default function TodoListDirective() {
 
-  return{
+  return {
     restrict: 'E',
-    template : template,
-    scope: {},
+    template: template,
+    scope: {
+      storage: '@'
+    },
 
-    controller: ($scope, $filter, todoStorage) => {
+    controller: ($scope, $filter, StorageFactory) => {
+
+      let storage = new StorageFactory($scope.storage).get();
+      let todos = $scope.todos = storage.get();
       $scope.newTodo = '';
       $scope.editedTodo = null;
-      let todos = $scope.todos = todoStorage.get();
 
       $scope.$watch('todos', () => {
         $scope.remainingCount = $filter('filter')(todos, {completed: false}).length;
         $scope.completedCount = todos.length - $scope.remainingCount;
         $scope.allChecked = !$scope.remainingCount;
       }, true);
-
-      // Monitor the current route for changes and adjust the filter accordingly.
 
       $scope.onStatusChange = (status) => {
         $scope.statusFilter = (status === 'active') ?
@@ -41,7 +43,7 @@ export default function TodoListDirective() {
           completed: false
         };
 
-        todoStorage.add(newTodo).then(function success() {
+        storage.add(newTodo).then(function success() {
           $scope.newTodo = null;
           $scope.$apply();
         });
@@ -49,13 +51,10 @@ export default function TodoListDirective() {
 
       $scope.editTodo = (todo) => {
         $scope.editedTodo = todo;
-        // Clone the original todo to restore it on demand.
         $scope.originalTodo = angular.extend({}, todo);
       };
 
       $scope.saveEdits = (todo, event) => {
-        // Blur events are automatically triggered after the form submit event.
-        // This does some unfortunate logic handling to prevent saving twice.
         if (event === 'blur' && $scope.saveEvent === 'submit') {
           $scope.saveEvent = null;
           return;
@@ -64,7 +63,6 @@ export default function TodoListDirective() {
         $scope.saveEvent = event;
 
         if ($scope.reverted) {
-          // Todo edits were reverted-- don't save.
           $scope.reverted = null;
           return;
         }
@@ -76,7 +74,7 @@ export default function TodoListDirective() {
           return;
         }
 
-        todoStorage.save(todo).catch(() => {
+        storage.save(todo).catch(() => {
           todo.title = $scope.originalTodo.title;
         }).then(() => {
           $scope.editedTodo = null;
@@ -91,18 +89,18 @@ export default function TodoListDirective() {
       };
 
       $scope.removeTodo = (todo) => {
-        todoStorage.remove(todo);
+        storage.remove(todo);
       };
 
       $scope.toggleCompleted = (todo) => {
-        todoStorage.save(todo)
-            .catch((error) => {
-              throw error;
-            });
+        storage.save(todo)
+          .catch((error) => {
+            throw error;
+          });
       };
 
       $scope.clearCompletedTodos = () => {
-        todoStorage.filter((todo) => {
+        storage.filter((todo) => {
           return !todo.completed;
         });
       };
@@ -116,6 +114,6 @@ export default function TodoListDirective() {
         });
       };
     }
-  }
+  };
 
 }
