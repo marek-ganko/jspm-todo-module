@@ -6,7 +6,7 @@ import 'todomvc-app-css/index.css!';
 import './style.css!';
 import angular from 'angular';
 
-export default function TodoListDirective() {
+export default function TodoListDirective(StorageFactory) {
 
   return {
     restrict: 'E',

@@ -4,8 +4,6 @@ import CookieStorage from './storage/CookieStorage';
 
 export default class StorageFactory {
   constructor(storageType = 'localStorage') {
-    this.storage = null;
-
     switch (storageType) {
       case 'localStorage':
         this.storage = new LocalStorage();
