@@ -1,6 +1,6 @@
 {
   "name": "todo-module",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Todo Module",
   "devDependencies": {
     "browser-sync": "^2.5.3",
