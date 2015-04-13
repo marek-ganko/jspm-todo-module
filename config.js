@@ -6,6 +6,8 @@ System.config({
     "npm:*": "jspm_packages/npm/*.js",
     "github:angular/bower-angular@1.3.15": "src/shim/angular.js"
   },
+  "separateCSS": false,
+  "buildCSS": true,
   "babelOptions": {
     "experimental": false,
     "optional": []
