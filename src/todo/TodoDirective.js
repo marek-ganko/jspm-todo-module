@@ -4,10 +4,10 @@ import 'todomvc-common';
 import 'todomvc-common/base.css!';
 import 'todomvc-app-css/index.css!';
 import './style.css!';
+import todoModule from './module';
 import angular from 'angular';
 
-export default function TodoListDirective(StorageFactory) {
-
+todoModule.directive('todo', function() {
   return {
     restrict: 'E',
     template: template,
@@ -116,4 +116,4 @@ export default function TodoListDirective(StorageFactory) {
     }
   };
 
-}
+});

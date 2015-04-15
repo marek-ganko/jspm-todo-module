@@ -1,5 +1,6 @@
 'use strict';
-import TodoModule from './todo/index';
+import './todo/index';
+import TodoModule from './todo/module';
 import Services from './services/index';
 import angular from 'angular';
 
