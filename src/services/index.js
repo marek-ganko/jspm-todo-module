@@ -35,5 +35,5 @@ class ExampleFactory {
 
 export default angular.module('todo.services', [])
     .factory('StorageFactory', () => StorageFactory)
-    .constant('exampleService', ExampleService)
+    .service('exampleService', ExampleService)
     .factory('exampleFactory', ($http) => new ExampleFactory($http));
