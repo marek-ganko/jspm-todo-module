@@ -774,7 +774,7 @@ System.register("src/todo/TodoDirective", ["./template.jade!", "todomvc-common",
   };
 });
 System.register("src/services/StorageFactory", ["./storage/LocalStorage", "./storage/CookieStorage"], function (_export) {
-  var LocalStorage, CookieStorage, _createClass, _classCallCheck, StorageFactory;
+  var LocalStorage, CookieStorage, _createClass, _classCallCheck, _default;
 
   return {
     setters: [function (_storageLocalStorage) {
@@ -789,11 +789,11 @@ System.register("src/services/StorageFactory", ["./storage/LocalStorage", "./sto
 
       _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
 
-      StorageFactory = (function () {
-        function StorageFactory() {
+      _default = (function () {
+        var _class = function _default() {
           var storageType = arguments[0] === undefined ? "localStorage" : arguments[0];
 
-          _classCallCheck(this, StorageFactory);
+          _classCallCheck(this, _class);
 
           switch (storageType) {
             case "localStorage":
@@ -805,9 +805,9 @@ System.register("src/services/StorageFactory", ["./storage/LocalStorage", "./sto
             default:
               throw new Error("Unknown storage type: " + storageType);
           }
-        }
+        };
 
-        _createClass(StorageFactory, {
+        _createClass(_class, {
           get: {
             value: function get() {
               return this.storage;
@@ -815,10 +815,10 @@ System.register("src/services/StorageFactory", ["./storage/LocalStorage", "./sto
           }
         });
 
-        return StorageFactory;
+        return _class;
       })();
 
-      _export("default", StorageFactory);
+      _export("default", _default);
     }
   };
 });
