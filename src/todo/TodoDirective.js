@@ -7,7 +7,7 @@ import './style.css!';
 import todoModule from './module';
 import angular from 'angular';
 
-todoModule.directive('todo', function() {
+todoModule.directive('todo', function(StorageFactory) {
   return {
     restrict: 'E',
     template: template,
@@ -15,7 +15,7 @@ todoModule.directive('todo', function() {
       storage: '@'
     },
 
-    controller: ($scope, $filter, StorageFactory) => {
+    controller: ($scope, $filter) => {
 
       let storage = new StorageFactory($scope.storage).get();
       let todos = $scope.todos = storage.get();
