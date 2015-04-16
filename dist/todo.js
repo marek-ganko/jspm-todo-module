@@ -719,7 +719,6 @@ System.register("github:angular/bower-angular@1.3.15", [], function (_export) {
     setters: [],
     execute: function () {
       "use strict";
-
       angular = window.angular;
 
       _export("default", angular);
@@ -727,7 +726,7 @@ System.register("github:angular/bower-angular@1.3.15", [], function (_export) {
   };
 });
 System.register("src/services/storage/Storage", ["github:angular/bower-angular@1.3.15"], function (_export) {
-  var angular, _prototypeProperties, _classCallCheck, Storage;
+  var angular, _createClass, _classCallCheck, Storage;
 
   return {
     setters: [function (_githubAngularBowerAngular1315) {
@@ -736,7 +735,7 @@ System.register("src/services/storage/Storage", ["github:angular/bower-angular@1
     execute: function () {
       "use strict";
 
-      _prototypeProperties = function (child, staticProps, instanceProps) { if (staticProps) Object.defineProperties(child, staticProps); if (instanceProps) Object.defineProperties(child.prototype, instanceProps); };
+      _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
       _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
 
@@ -747,7 +746,7 @@ System.register("src/services/storage/Storage", ["github:angular/bower-angular@1
           this.items = [];
         }
 
-        _prototypeProperties(Storage, null, {
+        _createClass(Storage, {
           add: {
 
             /**
@@ -764,9 +763,7 @@ System.register("src/services/storage/Storage", ["github:angular/bower-angular@1
                   resolve(items);
                 });
               });
-            },
-            writable: true,
-            configurable: true
+            }
           },
           save: {
 
@@ -784,9 +781,7 @@ System.register("src/services/storage/Storage", ["github:angular/bower-angular@1
                   resolve(items);
                 });
               });
-            },
-            writable: true,
-            configurable: true
+            }
           },
           remove: {
 
@@ -804,9 +799,7 @@ System.register("src/services/storage/Storage", ["github:angular/bower-angular@1
                   resolve(items);
                 });
               });
-            },
-            writable: true,
-            configurable: true
+            }
           },
           get: {
 
@@ -817,9 +810,7 @@ System.register("src/services/storage/Storage", ["github:angular/bower-angular@1
             value: function get() {
               this.items = this.getFromStorage();
               return this.items;
-            },
-            writable: true,
-            configurable: true
+            }
           },
           filter: {
             value: function filter(callback) {
@@ -832,23 +823,17 @@ System.register("src/services/storage/Storage", ["github:angular/bower-angular@1
                   resolve(items);
                 });
               });
-            },
-            writable: true,
-            configurable: true
+            }
           },
           getFromStorage: {
             value: function getFromStorage() {
               throw new Error("getFromStorage Not implemented");
-            },
-            writable: true,
-            configurable: true
+            }
           },
           saveOnStorage: {
             value: function saveOnStorage(items) {
               throw new Error("saveOnStorage Not implemented");
-            },
-            writable: true,
-            configurable: true
+            }
           }
         });
 
@@ -858,7 +843,7 @@ System.register("src/services/storage/Storage", ["github:angular/bower-angular@1
   };
 });
 System.register("src/services/storage/CookieStorage", ["src/services/storage/Storage"], function (_export) {
-  var Storage, _prototypeProperties, _get, _inherits, _classCallCheck, STORAGE_ID, CookieStorage;
+  var Storage, _createClass, _get, _inherits, _classCallCheck, STORAGE_ID, CookieStorage;
 
   return {
     setters: [function (_srcServicesStorageStorage) {
@@ -867,7 +852,7 @@ System.register("src/services/storage/CookieStorage", ["src/services/storage/Sto
     execute: function () {
       "use strict";
 
-      _prototypeProperties = function (child, staticProps, instanceProps) { if (staticProps) Object.defineProperties(child, staticProps); if (instanceProps) Object.defineProperties(child.prototype, instanceProps); };
+      _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
       _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc && desc.writable) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
@@ -877,16 +862,16 @@ System.register("src/services/storage/CookieStorage", ["src/services/storage/Sto
 
       STORAGE_ID = "todo-module";
 
-      CookieStorage = (function (Storage) {
+      CookieStorage = (function (_Storage) {
         function CookieStorage() {
           _classCallCheck(this, CookieStorage);
 
           _get(Object.getPrototypeOf(CookieStorage.prototype), "constructor", this).call(this, this);
         }
 
-        _inherits(CookieStorage, Storage);
+        _inherits(CookieStorage, _Storage);
 
-        _prototypeProperties(CookieStorage, null, {
+        _createClass(CookieStorage, {
           getFromStorage: {
 
             /**
@@ -897,9 +882,7 @@ System.register("src/services/storage/CookieStorage", ["src/services/storage/Sto
               var result = document.cookie.match(new RegExp(STORAGE_ID + "=([^;]+)"));
               result = result && JSON.parse(result[1]);
               return result || [];
-            },
-            writable: true,
-            configurable: true
+            }
           },
           saveOnStorage: {
 
@@ -912,9 +895,7 @@ System.register("src/services/storage/CookieStorage", ["src/services/storage/Sto
                 document.cookie = STORAGE_ID + "=" + JSON.stringify(items);
                 resolve(items);
               });
-            },
-            writable: true,
-            configurable: true
+            }
           }
         });
 
@@ -955,8 +936,21 @@ System.register("npm:todomvc-common@1.0.1", ["npm:todomvc-common@1.0.1/base"], t
 
 
 
+System.register("src/todo/module", ["github:angular/bower-angular@1.3.15"], function (_export) {
+  var angular;
+  return {
+    setters: [function (_githubAngularBowerAngular1315) {
+      angular = _githubAngularBowerAngular1315["default"];
+    }],
+    execute: function () {
+      "use strict";
+
+      _export("default", angular.module("todoModule", []));
+    }
+  };
+});
 System.register("src/services/storage/LocalStorage", ["src/services/storage/Storage"], function (_export) {
-  var Storage, _prototypeProperties, _get, _inherits, _classCallCheck, STORAGE_ID, LocalStorage;
+  var Storage, _createClass, _get, _inherits, _classCallCheck, STORAGE_ID, LocalStorage;
 
   return {
     setters: [function (_srcServicesStorageStorage) {
@@ -965,7 +959,7 @@ System.register("src/services/storage/LocalStorage", ["src/services/storage/Stor
     execute: function () {
       "use strict";
 
-      _prototypeProperties = function (child, staticProps, instanceProps) { if (staticProps) Object.defineProperties(child, staticProps); if (instanceProps) Object.defineProperties(child.prototype, instanceProps); };
+      _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
       _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc && desc.writable) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
@@ -975,16 +969,16 @@ System.register("src/services/storage/LocalStorage", ["src/services/storage/Stor
 
       STORAGE_ID = "todo-module";
 
-      LocalStorage = (function (Storage) {
+      LocalStorage = (function (_Storage) {
         function LocalStorage() {
           _classCallCheck(this, LocalStorage);
 
           _get(Object.getPrototypeOf(LocalStorage.prototype), "constructor", this).call(this, this);
         }
 
-        _inherits(LocalStorage, Storage);
+        _inherits(LocalStorage, _Storage);
 
-        _prototypeProperties(LocalStorage, null, {
+        _createClass(LocalStorage, {
           getFromStorage: {
 
             /**
@@ -993,9 +987,7 @@ System.register("src/services/storage/LocalStorage", ["src/services/storage/Stor
 
             value: function getFromStorage() {
               return JSON.parse(localStorage.getItem(STORAGE_ID) || "[]");
-            },
-            writable: true,
-            configurable: true
+            }
           },
           saveOnStorage: {
 
@@ -1008,9 +1000,7 @@ System.register("src/services/storage/LocalStorage", ["src/services/storage/Stor
                 localStorage.setItem(STORAGE_ID, JSON.stringify(items));
                 resolve(items);
               });
-            },
-            writable: true,
-            configurable: true
+            }
           }
         });
 
@@ -1021,132 +1011,130 @@ System.register("src/services/storage/LocalStorage", ["src/services/storage/Stor
     }
   };
 });
-System.register("src/todo/TodoDirective", ["src/todo/template.jade!github:johnsoftek/plugin-jade@0.4.0", "npm:todomvc-common@1.0.1", "npm:todomvc-common@1.0.1/base.css!github:systemjs/plugin-css@0.1.9", "npm:todomvc-app-css@1.0.1/index.css!github:systemjs/plugin-css@0.1.9", "src/todo/style.css!github:systemjs/plugin-css@0.1.9", "github:angular/bower-angular@1.3.15"], function (_export) {
-  var template, angular;
-
-  _export("default", TodoListDirective);
-
-  function TodoListDirective() {
-
-    return {
-      restrict: "E",
-      template: template,
-      scope: {
-        storage: "@"
-      },
-
-      controller: function ($scope, $filter, StorageFactory) {
-
-        var storage = new StorageFactory($scope.storage).get();
-        var todos = $scope.todos = storage.get();
-        $scope.newTodo = "";
-        $scope.editedTodo = null;
-
-        $scope.$watch("todos", function () {
-          $scope.remainingCount = $filter("filter")(todos, { completed: false }).length;
-          $scope.completedCount = todos.length - $scope.remainingCount;
-          $scope.allChecked = !$scope.remainingCount;
-        }, true);
-
-        $scope.onStatusChange = function (status) {
-          $scope.statusFilter = status === "active" ? { completed: false } : status === "completed" ? { completed: true } : {};
-        };
-
-        $scope.addTodo = function () {
-          if (!$scope.newTodo) {
-            return;
-          }
-          var newTodo = {
-            title: $scope.newTodo.trim(),
-            completed: false
-          };
-
-          storage.add(newTodo).then(function success() {
-            $scope.newTodo = null;
-            $scope.$apply();
-          });
-        };
-
-        $scope.editTodo = function (todo) {
-          $scope.editedTodo = todo;
-          $scope.originalTodo = angular.extend({}, todo);
-        };
-
-        $scope.saveEdits = function (todo, event) {
-          if (event === "blur" && $scope.saveEvent === "submit") {
-            $scope.saveEvent = null;
-            return;
-          }
-
-          $scope.saveEvent = event;
-
-          if ($scope.reverted) {
-            $scope.reverted = null;
-            return;
-          }
-
-          todo.title = todo.title.trim();
-
-          if (todo.title === $scope.originalTodo.title) {
-            $scope.editedTodo = null;
-            return;
-          }
-
-          storage.save(todo)["catch"](function () {
-            todo.title = $scope.originalTodo.title;
-          }).then(function () {
-            $scope.editedTodo = null;
-          });
-        };
-
-        $scope.revertEdits = function (todo) {
-          todos[todos.indexOf(todo)] = $scope.originalTodo;
-          $scope.editedTodo = null;
-          $scope.originalTodo = null;
-          $scope.reverted = true;
-        };
-
-        $scope.removeTodo = function (todo) {
-          storage.remove(todo);
-        };
-
-        $scope.toggleCompleted = function (todo) {
-          storage.save(todo)["catch"](function (error) {
-            throw error;
-          });
-        };
-
-        $scope.clearCompletedTodos = function () {
-          storage.filter(function (todo) {
-            return !todo.completed;
-          });
-        };
-
-        $scope.markAll = function (completed) {
-          todos.forEach(function (todo) {
-            if (todo.completed !== completed) {
-              todo.completed = !todo.completed;
-              $scope.toggleCompleted(todo);
-            }
-          });
-        };
-      }
-    };
-  }
-
+System.register("src/todo/TodoDirective", ["src/todo/template.jade!github:johnsoftek/plugin-jade@0.4.0", "npm:todomvc-common@1.0.1", "npm:todomvc-common@1.0.1/base.css!github:systemjs/plugin-css@0.1.9", "npm:todomvc-app-css@1.0.1/index.css!github:systemjs/plugin-css@0.1.9", "src/todo/style.css!github:systemjs/plugin-css@0.1.9", "src/todo/module", "github:angular/bower-angular@1.3.15"], function (_export) {
+  var template, todoModule, angular;
   return {
     setters: [function (_srcTodoTemplateJadeGithubJohnsoftekPluginJade040) {
       template = _srcTodoTemplateJadeGithubJohnsoftekPluginJade040["default"];
-    }, function (_npmTodomvcCommon101) {}, function (_npmTodomvcCommon101BaseCssGithubSystemjsPluginCss019) {}, function (_npmTodomvcAppCss101IndexCssGithubSystemjsPluginCss019) {}, function (_srcTodoStyleCssGithubSystemjsPluginCss019) {}, function (_githubAngularBowerAngular1315) {
+    }, function (_npmTodomvcCommon101) {}, function (_npmTodomvcCommon101BaseCssGithubSystemjsPluginCss019) {}, function (_npmTodomvcAppCss101IndexCssGithubSystemjsPluginCss019) {}, function (_srcTodoStyleCssGithubSystemjsPluginCss019) {}, function (_srcTodoModule) {
+      todoModule = _srcTodoModule["default"];
+    }, function (_githubAngularBowerAngular1315) {
       angular = _githubAngularBowerAngular1315["default"];
     }],
     execute: function () {
       "use strict";
+
+      todoModule.directive("todo", function (StorageFactory) {
+        return {
+          restrict: "E",
+          template: template,
+          scope: {
+            storage: "@"
+          },
+
+          controller: function ($scope, $filter) {
+
+            var storage = new StorageFactory($scope.storage).get();
+            var todos = $scope.todos = storage.get();
+            $scope.newTodo = "";
+            $scope.editedTodo = null;
+
+            $scope.$watch("todos", function () {
+              $scope.remainingCount = $filter("filter")(todos, { completed: false }).length;
+              $scope.completedCount = todos.length - $scope.remainingCount;
+              $scope.allChecked = !$scope.remainingCount;
+            }, true);
+
+            $scope.onStatusChange = function (status) {
+              $scope.statusFilter = status === "active" ? { completed: false } : status === "completed" ? { completed: true } : {};
+            };
+
+            $scope.addTodo = function () {
+              if (!$scope.newTodo) {
+                return;
+              }
+              var newTodo = {
+                title: $scope.newTodo.trim(),
+                completed: false
+              };
+
+              storage.add(newTodo).then(function success() {
+                $scope.newTodo = null;
+                $scope.$apply();
+              });
+            };
+
+            $scope.editTodo = function (todo) {
+              $scope.editedTodo = todo;
+              $scope.originalTodo = angular.extend({}, todo);
+            };
+
+            $scope.saveEdits = function (todo, event) {
+              if (event === "blur" && $scope.saveEvent === "submit") {
+                $scope.saveEvent = null;
+                return;
+              }
+
+              $scope.saveEvent = event;
+
+              if ($scope.reverted) {
+                $scope.reverted = null;
+                return;
+              }
+
+              todo.title = todo.title.trim();
+
+              if (todo.title === $scope.originalTodo.title) {
+                $scope.editedTodo = null;
+                return;
+              }
+
+              storage.save(todo)["catch"](function () {
+                todo.title = $scope.originalTodo.title;
+              }).then(function () {
+                $scope.editedTodo = null;
+              });
+            };
+
+            $scope.revertEdits = function (todo) {
+              todos[todos.indexOf(todo)] = $scope.originalTodo;
+              $scope.editedTodo = null;
+              $scope.originalTodo = null;
+              $scope.reverted = true;
+            };
+
+            $scope.removeTodo = function (todo) {
+              storage.remove(todo);
+            };
+
+            $scope.toggleCompleted = function (todo) {
+              storage.save(todo)["catch"](function (error) {
+                throw error;
+              });
+            };
+
+            $scope.clearCompletedTodos = function () {
+              storage.filter(function (todo) {
+                return !todo.completed;
+              });
+            };
+
+            $scope.markAll = function (completed) {
+              todos.forEach(function (todo) {
+                if (todo.completed !== completed) {
+                  todo.completed = !todo.completed;
+                  $scope.toggleCompleted(todo);
+                }
+              });
+            };
+          }
+        };
+      });
     }
   };
 });
 System.register("src/services/StorageFactory", ["src/services/storage/LocalStorage", "src/services/storage/CookieStorage"], function (_export) {
-  var LocalStorage, CookieStorage, _prototypeProperties, _classCallCheck, StorageFactory;
+  var LocalStorage, CookieStorage, _createClass, _classCallCheck, StorageFactory;
 
   return {
     setters: [function (_srcServicesStorageLocalStorage) {
@@ -1157,7 +1145,7 @@ System.register("src/services/StorageFactory", ["src/services/storage/LocalStora
     execute: function () {
       "use strict";
 
-      _prototypeProperties = function (child, staticProps, instanceProps) { if (staticProps) Object.defineProperties(child, staticProps); if (instanceProps) Object.defineProperties(child.prototype, instanceProps); };
+      _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
       _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
 
@@ -1166,8 +1154,6 @@ System.register("src/services/StorageFactory", ["src/services/storage/LocalStora
           var storageType = arguments[0] === undefined ? "localStorage" : arguments[0];
 
           _classCallCheck(this, StorageFactory);
-
-          this.storage = null;
 
           switch (storageType) {
             case "localStorage":
@@ -1181,13 +1167,11 @@ System.register("src/services/StorageFactory", ["src/services/storage/LocalStora
           }
         }
 
-        _prototypeProperties(StorageFactory, null, {
+        _createClass(StorageFactory, {
           get: {
             value: function get() {
               return this.storage;
-            },
-            writable: true,
-            configurable: true
+            }
           }
         });
 
@@ -1198,23 +1182,17 @@ System.register("src/services/StorageFactory", ["src/services/storage/LocalStora
     }
   };
 });
-System.register("src/todo/index", ["src/todo/TodoDirective", "github:angular/bower-angular@1.3.15"], function (_export) {
-  var TodoDirective, angular;
+System.register("src/todo/index", ["src/todo/TodoDirective"], function (_export) {
   return {
-    setters: [function (_srcTodoTodoDirective) {
-      TodoDirective = _srcTodoTodoDirective["default"];
-    }, function (_githubAngularBowerAngular1315) {
-      angular = _githubAngularBowerAngular1315["default"];
-    }],
+    setters: [function (_srcTodoTodoDirective) {}],
     execute: function () {
       "use strict";
-
-      _export("default", angular.module("todoModule", []).directive("todo", TodoDirective));
     }
   };
 });
 System.register("src/services/index", ["src/services/StorageFactory", "github:angular/bower-angular@1.3.15"], function (_export) {
-  var StorageFactory, angular;
+  var StorageFactory, angular, _createClass, _classCallCheck, ExampleService, ExampleFactory;
+
   return {
     setters: [function (_srcServicesStorageFactory) {
       StorageFactory = _srcServicesStorageFactory["default"];
@@ -1224,17 +1202,70 @@ System.register("src/services/index", ["src/services/StorageFactory", "github:an
     execute: function () {
       "use strict";
 
+      _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+      _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+
+      ExampleService = (function () {
+        function ExampleService($http) {
+          _classCallCheck(this, ExampleService);
+
+          this.$http = $http;
+        }
+
+        _createClass(ExampleService, {
+          getSomeContent: {
+            value: function getSomeContent() {
+              this.$http.get("src/Todo.js").then(function (Todo) {
+                console.info(Todo);
+              });
+            }
+          }
+        });
+
+        return ExampleService;
+      })();
+
+      ExampleFactory = (function () {
+        function ExampleFactory($http) {
+          _classCallCheck(this, ExampleFactory);
+
+          this.$http = $http;
+        }
+
+        _createClass(ExampleFactory, {
+          getSomeContent: {
+            value: function getSomeContent() {
+              this.$http.get("src/Todo.js").then(function (Todo) {
+                console.info(Todo);
+              });
+            }
+          },
+          getContentInjector: {
+            value: function getContentInjector($http) {
+              this.$http.get("src/Todo.js").then(function (Todo) {
+                console.info(Todo);
+              });
+            }
+          }
+        });
+
+        return ExampleFactory;
+      })();
+
       _export("default", angular.module("todo.services", []).factory("StorageFactory", function () {
         return StorageFactory;
+      }).service("exampleService", ExampleService).factory("exampleFactory", function ($http) {
+        return new ExampleFactory($http);
       }));
     }
   };
 });
-System.register("src/Todo", ["src/todo/index", "src/services/index", "github:angular/bower-angular@1.3.15"], function (_export) {
+System.register("src/Todo", ["src/todo/index", "src/todo/module", "src/services/index", "github:angular/bower-angular@1.3.15"], function (_export) {
   var TodoModule, Services, angular;
   return {
-    setters: [function (_srcTodoIndex) {
-      TodoModule = _srcTodoIndex["default"];
+    setters: [function (_srcTodoIndex) {}, function (_srcTodoModule) {
+      TodoModule = _srcTodoModule["default"];
     }, function (_srcServicesIndex) {
       Services = _srcServicesIndex["default"];
     }, function (_githubAngularBowerAngular1315) {
