@@ -40,11 +40,6 @@
       "jade": "github:johnsoftek/plugin-jade@^0.4.0",
       "todomvc-app-css": "npm:todomvc-app-css@^1.0.1",
       "todomvc-common": "npm:todomvc-common@^1.0.1"
-    },
-    "devDependencies": {
-      "babel": "npm:babel-core@^5.0.12",
-      "babel-runtime": "npm:babel-runtime@^5.0.12",
-      "core-js": "npm:core-js@^0.8.1"
     }
   },
   "scripts": {

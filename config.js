@@ -1,14 +1,14 @@
 System.config({
   "transpiler": "babel",
-  "babelOptions": {
-    "experimental": false,
-    "optional": []
-  },
   "paths": {
     "*": "*.js",
     "github:*": "jspm_packages/github/*.js",
     "npm:*": "jspm_packages/npm/*.js",
     "github:angular/bower-angular@1.3.15": "src/shim/angular.js"
+  },
+  "babelOptions": {
+    "experimental": false,
+    "optional": []
   },
   "separateCSS": false,
   "buildCSS": true
@@ -18,12 +18,11 @@ System.config({
   "map": {
     "angular": "github:angular/bower-angular@1.3.15",
     "angular-mocks": "github:angular/bower-angular-mocks@1.3.15",
-    "babel": "npm:babel-core@5.1.10",
-    "babel-runtime": "npm:babel-runtime@5.1.10",
-    "core-js": "npm:core-js@0.8.3",
+    "babel": "npm:babel@4.7.16",
+    "babel-runtime": "npm:babel-runtime@4.7.16",
     "css": "github:systemjs/plugin-css@0.1.9",
     "jade": "github:johnsoftek/plugin-jade@0.4.0",
-    "todomvc-app-css": "npm:todomvc-app-css@1.0.4",
+    "todomvc-app-css": "npm:todomvc-app-css@1.0.1",
     "todomvc-common": "npm:todomvc-common@1.0.1",
     "github:angular/bower-angular-mocks@1.3.15": {
       "angular": "github:angular/bower-angular@1.3.15"
@@ -41,7 +40,7 @@ System.config({
       "constants-browserify": "npm:constants-browserify@0.0.1"
     },
     "github:jspm/nodelibs-crypto@0.1.0": {
-      "crypto-browserify": "npm:crypto-browserify@3.9.14"
+      "crypto-browserify": "npm:crypto-browserify@3.9.13"
     },
     "github:jspm/nodelibs-events@0.1.0": {
       "events-browserify": "npm:events-browserify@0.0.1"
@@ -163,6 +162,9 @@ System.config({
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "url": "github:jspm/nodelibs-url@0.1.0"
     },
+    "npm:babel-runtime@4.7.16": {
+      "process": "github:jspm/nodelibs-process@0.1.1"
+    },
     "npm:boom@0.4.2": {
       "hoek": "npm:hoek@0.9.1",
       "http": "github:jspm/nodelibs-http@1.7.1",
@@ -199,19 +201,6 @@ System.config({
       "inherits": "npm:inherits@2.0.1",
       "parse-asn1": "npm:parse-asn1@2.0.0",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
-    },
-    "npm:browserify-sign@3.0.1": {
-      "bn.js": "npm:bn.js@1.3.0",
-      "browserify-rsa": "npm:browserify-rsa@2.0.0",
-      "buffer": "github:jspm/nodelibs-buffer@0.1.0",
-      "create-hash": "npm:create-hash@1.1.1",
-      "create-hmac": "npm:create-hmac@1.1.3",
-      "crypto": "github:jspm/nodelibs-crypto@0.1.0",
-      "elliptic": "npm:elliptic@1.0.1",
-      "inherits": "npm:inherits@2.0.1",
-      "parse-asn1": "npm:parse-asn1@3.0.0",
-      "stream": "github:jspm/nodelibs-stream@0.1.0",
-      "systemjs-json": "github:systemjs/plugin-json@0.1.0"
     },
     "npm:browserify-zlib@0.1.4": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
@@ -256,9 +245,6 @@ System.config({
     },
     "npm:constants-browserify@0.0.1": {
       "systemjs-json": "github:systemjs/plugin-json@0.1.0"
-    },
-    "npm:core-js@0.8.3": {
-      "process": "github:jspm/nodelibs-process@0.1.1"
     },
     "npm:core-util-is@1.0.1": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0"
@@ -310,18 +296,6 @@ System.config({
       "diffie-hellman": "npm:diffie-hellman@3.0.1",
       "inherits": "npm:inherits@2.0.1",
       "pbkdf2-compat": "npm:pbkdf2-compat@3.0.2",
-      "public-encrypt": "npm:public-encrypt@2.0.0",
-      "randombytes": "npm:randombytes@2.0.1"
-    },
-    "npm:crypto-browserify@3.9.14": {
-      "browserify-aes": "npm:browserify-aes@1.0.0",
-      "browserify-sign": "npm:browserify-sign@3.0.1",
-      "create-ecdh": "npm:create-ecdh@2.0.0",
-      "create-hash": "npm:create-hash@1.1.1",
-      "create-hmac": "npm:create-hmac@1.1.3",
-      "diffie-hellman": "npm:diffie-hellman@3.0.1",
-      "inherits": "npm:inherits@2.0.1",
-      "pbkdf2": "npm:pbkdf2@3.0.4",
       "public-encrypt": "npm:public-encrypt@2.0.0",
       "randombytes": "npm:randombytes@2.0.1"
     },
@@ -511,15 +485,6 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.1"
     },
     "npm:pbkdf2-compat@3.0.2": {
-      "buffer": "github:jspm/nodelibs-buffer@0.1.0",
-      "child_process": "github:jspm/nodelibs-child_process@0.1.0",
-      "create-hmac": "npm:create-hmac@1.1.3",
-      "crypto": "github:jspm/nodelibs-crypto@0.1.0",
-      "path": "github:jspm/nodelibs-path@0.1.0",
-      "process": "github:jspm/nodelibs-process@0.1.1",
-      "systemjs-json": "github:systemjs/plugin-json@0.1.0"
-    },
-    "npm:pbkdf2@3.0.4": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "child_process": "github:jspm/nodelibs-child_process@0.1.0",
       "create-hmac": "npm:create-hmac@1.1.3",
